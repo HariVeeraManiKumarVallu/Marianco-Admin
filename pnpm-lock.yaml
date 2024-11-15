@@ -17,6 +17,9 @@ importers:
       '@strapi/strapi':
         specifier: 5.4.0
         version: 5.4.0(@babel/runtime@7.26.0)(@codemirror/autocomplete@6.18.3(@codemirror/language@6.10.3)(@codemirror/state@6.4.1)(@codemirror/view@6.34.2)(@lezer/common@1.2.3))(@codemirror/language@6.10.3)(@codemirror/lint@6.8.2)(@codemirror/search@6.5.7)(@codemirror/state@6.4.1)(@codemirror/theme-one-dark@6.1.2)(@codemirror/view@6.34.2)(@swc/helpers@0.5.15)(@types/hoist-non-react-statics@3.3.5)(@types/node@20.17.6)(@types/react-dom@18.3.1)(@types/react@18.3.12)(better-sqlite3@11.3.0)(codemirror@5.65.18)(koa@2.15.2)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(redux@4.2.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.36.0)(type-fest@4.26.1)
+      '@strapi/typescript-utils':
+        specifier: ^5.4.0
+        version: 5.4.0
       better-sqlite3:
         specifier: 11.3.0
         version: 11.3.0
@@ -7373,7 +7376,7 @@ snapshots:
       '@strapi/design-system': 2.0.0-rc.12(@babel/runtime@7.26.0)(@codemirror/autocomplete@6.18.3(@codemirror/language@6.10.3)(@codemirror/state@6.4.1)(@codemirror/view@6.34.2)(@lezer/common@1.2.3))(@codemirror/language@6.10.3)(@codemirror/lint@6.8.2)(@codemirror/search@6.5.7)(@codemirror/state@6.4.1)(@codemirror/theme-one-dark@6.1.2)(@codemirror/view@6.34.2)(@strapi/icons@2.0.0-rc.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.1)(@types/react@18.3.12)(codemirror@5.65.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/icons': 2.0.0-rc.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/permissions': 5.4.0
-      '@strapi/types': 5.4.0(@types/node@20.17.6)(better-sqlite3@11.3.0)(typescript@5.3.2)
+      '@strapi/types': 5.4.0(@types/node@20.17.6)(better-sqlite3@11.3.0)(typescript@5.6.3)
       '@strapi/typescript-utils': 5.4.0
       '@strapi/utils': 5.4.0
       '@testing-library/dom': 10.1.0
@@ -7566,7 +7569,7 @@ snapshots:
       '@strapi/database': 5.4.0(@types/node@20.17.6)(better-sqlite3@11.3.0)
       '@strapi/design-system': 2.0.0-rc.12(@babel/runtime@7.26.0)(@codemirror/autocomplete@6.18.3(@codemirror/language@6.10.3)(@codemirror/state@6.4.1)(@codemirror/view@6.34.2)(@lezer/common@1.2.3))(@codemirror/language@6.10.3)(@codemirror/lint@6.8.2)(@codemirror/search@6.5.7)(@codemirror/state@6.4.1)(@codemirror/theme-one-dark@6.1.2)(@codemirror/view@6.34.2)(@strapi/icons@2.0.0-rc.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.1)(@types/react@18.3.12)(codemirror@5.65.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/icons': 2.0.0-rc.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      '@strapi/types': 5.4.0(@types/node@20.17.6)(better-sqlite3@11.3.0)(typescript@5.3.2)
+      '@strapi/types': 5.4.0(@types/node@20.17.6)(better-sqlite3@11.3.0)(typescript@5.6.3)
       '@strapi/utils': 5.4.0
       date-fns: 2.30.0
       date-fns-tz: 2.0.1(date-fns@2.30.0)
@@ -7655,7 +7658,7 @@ snapshots:
       '@strapi/logger': 5.4.0
       '@strapi/pack-up': 5.0.0(@swc/helpers@0.5.15)(@types/node@20.17.6)(debug@4.3.4)(terser@5.36.0)
       '@strapi/permissions': 5.4.0
-      '@strapi/types': 5.4.0(@types/node@20.17.6)(better-sqlite3@11.3.0)(typescript@5.3.2)
+      '@strapi/types': 5.4.0(@types/node@20.17.6)(better-sqlite3@11.3.0)(typescript@5.6.3)
       '@strapi/typescript-utils': 5.4.0
       '@strapi/utils': 5.4.0
       bcryptjs: 2.4.3
@@ -8102,7 +8105,7 @@ snapshots:
       '@strapi/pack-up': 5.0.0(@swc/helpers@0.5.15)(@types/node@20.17.6)(debug@4.3.4)(terser@5.36.0)
       '@strapi/permissions': 5.4.0
       '@strapi/review-workflows': 5.4.0(i4j5rhkrhgwsgg4djunhscpobi)
-      '@strapi/types': 5.4.0(@types/node@20.17.6)(better-sqlite3@11.3.0)(typescript@5.3.2)
+      '@strapi/types': 5.4.0(@types/node@20.17.6)(better-sqlite3@11.3.0)(typescript@5.6.3)
       '@strapi/typescript-utils': 5.4.0
       '@strapi/upload': 5.4.0(rck4qx7nzqtxorkkb4wj4nnchy)
       '@strapi/utils': 5.4.0
@@ -8203,34 +8206,6 @@ snapshots:
       - webpack-cli
       - webpack-dev-server
       - webpack-plugin-serve
-
-  '@strapi/types@5.4.0(@types/node@20.17.6)(better-sqlite3@11.3.0)(typescript@5.3.2)':
-    dependencies:
-      '@casl/ability': 6.5.0
-      '@koa/cors': 5.0.0
-      '@koa/router': 12.0.2
-      '@strapi/database': 5.4.0(@types/node@20.17.6)(better-sqlite3@11.3.0)
-      '@strapi/logger': 5.4.0
-      '@strapi/permissions': 5.4.0
-      '@strapi/utils': 5.4.0
-      commander: 8.3.0
-      koa: 2.15.2
-      koa-body: 6.0.1
-      node-schedule: 2.1.1
-      typedoc: 0.25.10(typescript@5.3.2)
-      typedoc-github-wiki-theme: 1.1.0(typedoc-plugin-markdown@3.17.1(typedoc@0.25.10(typescript@5.6.3)))(typedoc@0.25.10(typescript@5.6.3))
-      typedoc-plugin-markdown: 3.17.1(typedoc@0.25.10(typescript@5.6.3))
-    transitivePeerDependencies:
-      - '@types/node'
-      - better-sqlite3
-      - mysql
-      - mysql2
-      - pg
-      - pg-native
-      - sqlite3
-      - supports-color
-      - tedious
-      - typescript
 
   '@strapi/types@5.4.0(@types/node@20.17.6)(better-sqlite3@11.3.0)(typescript@5.6.3)':
     dependencies:
@@ -12718,14 +12693,6 @@ snapshots:
     dependencies:
       handlebars: 4.7.8
       typedoc: 0.25.10(typescript@5.6.3)
-
-  typedoc@0.25.10(typescript@5.3.2):
-    dependencies:
-      lunr: 2.3.9
-      marked: 4.3.0
-      minimatch: 9.0.5
-      shiki: 0.14.7
-      typescript: 5.3.2
 
   typedoc@0.25.10(typescript@5.6.3):
     dependencies:
