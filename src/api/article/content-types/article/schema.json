@@ -26,9 +26,6 @@
       "type": "date",
       "required": true
     },
-    "thumbnailUrl": {
-      "type": "string"
-    },
     "isFeatured": {
       "type": "boolean",
       "default": false
@@ -37,11 +34,17 @@
       "type": "uid",
       "targetField": "title"
     },
-    "featuredImageUrl": {
-      "type": "string"
-    },
     "isArchived": {
       "type": "boolean"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
     }
   }
 }
