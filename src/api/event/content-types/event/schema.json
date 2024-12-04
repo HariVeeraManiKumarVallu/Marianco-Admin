@@ -16,7 +16,7 @@
       "type": "string",
       "required": true
     },
-    "description": {
+    "summary": {
       "type": "text",
       "required": true
     },
@@ -29,9 +29,6 @@
     "location": {
       "type": "string"
     },
-    "imageUrl": {
-      "type": "string"
-    },
     "isPastEvent": {
       "type": "boolean",
       "default": false,
@@ -41,6 +38,17 @@
       "type": "uid",
       "targetField": "title",
       "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }

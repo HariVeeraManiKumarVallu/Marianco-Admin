@@ -422,8 +422,7 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     date: Schema.Attribute.Date;
-    description: Schema.Attribute.Text & Schema.Attribute.Required;
-    imageUrl: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     isPastEvent: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<false>;
@@ -433,6 +432,7 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     location: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    summary: Schema.Attribute.Text & Schema.Attribute.Required;
     time: Schema.Attribute.Time;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
