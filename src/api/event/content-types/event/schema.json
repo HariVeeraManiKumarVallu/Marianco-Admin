@@ -49,6 +49,14 @@
         "videos",
         "audios"
       ]
+    },
+    "maxAttendance": {
+      "type": "integer",
+      "required": true
+    },
+    "totalAttending": {
+      "type": "integer",
+      "min": 0
     }
   }
 }

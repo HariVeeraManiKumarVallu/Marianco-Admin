@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "event_attendees",
+  "info": {
+    "singularName": "event-attendee",
+    "pluralName": "event-attendees",
+    "displayName": "Event-Attendee",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "city": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "integer",
+      "default": 1,
+      "required": true,
+      "min": 1
+    },
+    "organization": {
+      "type": "string"
+    },
+    "event": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::event.event"
+    }
+  }
+}
