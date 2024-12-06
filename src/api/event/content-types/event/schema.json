@@ -57,6 +57,9 @@
     "totalAttending": {
       "type": "integer",
       "min": 0
+    },
+    "content": {
+      "type": "blocks"
     }
   }
 }
