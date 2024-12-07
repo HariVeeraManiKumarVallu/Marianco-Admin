@@ -509,7 +509,7 @@ export interface ApiTeamMemberTeamMember extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    heirarchy: Schema.Attribute.Integer &
+    hierarchy: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.Unique &
       Schema.Attribute.SetMinMax<
