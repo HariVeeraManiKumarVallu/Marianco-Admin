@@ -3,10 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "description": "A Strapi application",
-  "engines": {
-    "node": "^20.18.1",
-    "npm": ">=6.0.0"
-  },
   "scripts": {
     "build": "strapi build",
     "deploy": "strapi deploy",
@@ -17,9 +13,9 @@
   "dependencies": {
     "@strapi/plugin-cloud": "5.4.0",
     "@strapi/plugin-users-permissions": "5.4.0",
-    "@strapi/provider-upload-aws-s3": "^5.5.2",
-    "@strapi/strapi": "5.5.2",
-    "@strapi/typescript-utils": "^5.5.2",
+    "@strapi/provider-upload-aws-s3": "^5.4.0",
+    "@strapi/strapi": "5.4.0",
+    "@strapi/typescript-utils": "^5.4.0",
     "better-sqlite3": "^11.5.0",
     "pg": "^8.13.1",
     "react": "^18.0.0",
@@ -28,10 +24,14 @@
     "styled-components": "^6.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=20.x.x",
+    "npm": ">=6.0.0"
   },
   "strapi": {
     "uuid": "bc833485-4d9d-4a13-9c07-c96bf1117495"
