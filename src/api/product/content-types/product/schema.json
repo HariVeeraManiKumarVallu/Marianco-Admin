@@ -36,12 +36,14 @@
       "private": true
     },
     "images": {
-      "allowedTypes": [
-        "images",
-        "files"
-      ],
       "type": "media",
-      "multiple": true
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images", "files"]
+    },
+    "popularity": {
+      "type": "integer",
+      "min": 0
     }
   }
 }
