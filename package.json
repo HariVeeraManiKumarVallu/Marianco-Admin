@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "description": "A Strapi application",
+  "engines": {
+    "node": "^20.18.1",
+    "npm": ">=6.0.0"
+  },
   "scripts": {
     "build": "strapi build",
     "deploy": "strapi deploy",
@@ -28,10 +32,6 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "typescript": "^5"
-  },
-  "engines": {
-    "node": "20.18.1",
-    "npm": ">=6.0.0"
   },
   "strapi": {
     "uuid": "bc833485-4d9d-4a13-9c07-c96bf1117495"
