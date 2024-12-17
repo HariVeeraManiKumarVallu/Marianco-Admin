@@ -8,8 +8,7 @@ export default ({ env }) => ({
       user: env('DATABASE_USERNAME'),
       password: env('DATABASE_PASSWORD'),
       ssl: {
-        rejectUnauthorized: false,
-        ca: process.env.CACERT,
+        rejectUnauthorized: env.bool('DATABASE_SSL_SELF', false), // For self-signed certificates
       },
     },
     debug: false,
