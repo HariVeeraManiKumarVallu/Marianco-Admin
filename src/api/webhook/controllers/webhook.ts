@@ -24,11 +24,10 @@ interface ProductData {
 }
 
 export default {
-  /**
-   * Receive and process Printify webhook events
-   */
   async webhook(ctx) {
     console.log(ctx.request.body)
+
+    ctx.send('Webhook received')
     //   try {
     //     // Type assertion for the payload
     //     const payload = ctx.request.body as PrintifyWebhookPayload
