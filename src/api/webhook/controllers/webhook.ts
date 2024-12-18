@@ -1,3 +1,6 @@
+import fs from 'fs'
+import path from 'path'
+
 interface PrintifyWebhookPayload {
   event: string
   timestamp: number
@@ -25,7 +28,27 @@ interface ProductData {
 
 export default {
   async webhook(ctx) {
-    console.log(ctx.request.body)
+    // Get the directory of the current module
+    const currentModulePath = path.resolve(__dirname)
+    const logDir = path.join(currentModulePath, '..', '..', '..', '..', 'logs')
+
+    // Ensure the logs directory exists
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir, { recursive: true })
+    }
+
+    // Create a filename with the current timestamp
+    const timestamp = new Date().toISOString().replace(/:/g, '-')
+    const logFilePath = path.join(logDir, `webhook_log_${timestamp}.json`)
+
+    // Prepare the log data
+    const logData = {
+      body: ctx.request.body,
+      details: ctx.request.body.data.publish_details,
+    }
+
+    // Write the log data to the file
+    fs.writeFileSync(logFilePath, JSON.stringify(logData, null, 2), 'utf8')
 
     ctx.send('Webhook received')
     //   try {
