@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import util from 'util'
 
 interface PrintifyWebhookPayload {
   event: string
@@ -28,6 +29,11 @@ interface ProductData {
 
 export default {
   async webhook(ctx) {
+    console.log(
+      'Webhook received:',
+      util.inspect(ctx.request.body, false, null, true)
+    )
+    console.log({ details: ctx.request.body?.data?.publish_details })
     // Get the directory of the current module
     const currentModulePath = path.resolve(__dirname)
     const logDir = path.join(currentModulePath, '..', '..', '..', '..', 'logs')
@@ -44,7 +50,7 @@ export default {
     // Prepare the log data
     const logData = {
       body: ctx.request.body,
-      details: ctx.request.body.data.publish_details,
+      details: ctx.request.body?.data?.publish_details ?? {},
     }
 
     // Write the log data to the file
