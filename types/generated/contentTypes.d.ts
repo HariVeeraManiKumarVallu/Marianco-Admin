@@ -536,11 +536,19 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    basePrice: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
-    images: Schema.Attribute.Media<'images' | 'files', true>;
+    images: Schema.Attribute.JSON;
     isArchived: Schema.Attribute.Boolean &
       Schema.Attribute.Private &
       Schema.Attribute.DefaultTo<false>;
@@ -550,15 +558,9 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'api::product.product'
     > &
       Schema.Attribute.Private;
+    longDescription: Schema.Attribute.Blocks;
+    mdDescription: Schema.Attribute.RichText;
     popularity: Schema.Attribute.Integer &
-      Schema.Attribute.SetMinMax<
-        {
-          min: 0;
-        },
-        number
-      >;
-    price: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
         {
           min: 0;
@@ -570,10 +572,14 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'api::product-category.product-category'
     >;
     publishedAt: Schema.Attribute.DateTime;
+    supplierProductId: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    variants: Schema.Attribute.JSON;
   };
 }
 

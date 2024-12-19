@@ -25,25 +25,36 @@
       "target": "api::product-category.product-category",
       "inversedBy": "products"
     },
-    "price": {
-      "type": "decimal",
-      "required": true,
-      "min": 0
-    },
     "isArchived": {
       "type": "boolean",
       "default": false,
       "private": true
     },
-    "images": {
-      "type": "media",
-      "multiple": true,
-      "required": false,
-      "allowedTypes": ["images", "files"]
-    },
     "popularity": {
       "type": "integer",
       "min": 0
+    },
+    "variants": {
+      "type": "json"
+    },
+    "images": {
+      "type": "json"
+    },
+    "supplierProductId": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "basePrice": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "mdDescription": {
+      "type": "richtext"
+    },
+    "longDescription": {
+      "type": "blocks"
     }
   }
 }
