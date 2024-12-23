@@ -550,6 +550,10 @@ export interface ApiProductOptionProductOption
     optionId: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
+    product_variants: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::product-variant.product-variant'
+    >;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -594,7 +598,7 @@ export interface ApiProductVariantProductVariant
     > &
       Schema.Attribute.Private;
     options: Schema.Attribute.Relation<
-      'oneToMany',
+      'manyToMany',
       'api::product-option.product-option'
     >;
     products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;

@@ -31,7 +31,7 @@ export default factories.createCoreService(
         })
 
       if (existingOptions.length === 0) {
-        await Promise.all(
+        const createdOptions = await Promise.all(
           formattedOptions.map(option =>
             strapi.documents('api::product-option.product-option').create({
               data: option,
@@ -39,7 +39,7 @@ export default factories.createCoreService(
             })
           )
         )
-        return
+        return [...createdOptions, ...existingOptions]
       }
 
       const existingOptionIds = new Set(
@@ -60,10 +60,10 @@ export default factories.createCoreService(
           )
         )
 
-        // return [...existingOptions, ...createdOptions]
+        return [...existingOptions, ...createdOptions]
       }
 
-      // return existingOptions
+      return existingOptions
     },
   })
 )

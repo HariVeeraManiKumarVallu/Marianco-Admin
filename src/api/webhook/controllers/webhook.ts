@@ -183,9 +183,13 @@ async function addProduct({
   )
   const data = (await res.json()) as Product
 
-  await strapi
+  const optionsInDb = await strapi
     .service('api::product-option.product-option')
     .addProductOptions(data.options)
+
+  await strapi
+    .service('api::product-variant.product-variant')
+    .addProductVariants(data.variants, optionsInDb)
 
   // const formattedData: ProductData = {
   //   supplierProductId: data.id,

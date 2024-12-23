@@ -29,8 +29,9 @@
     },
     "options": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product-option.product-option"
+      "relation": "manyToMany",
+      "target": "api::product-option.product-option",
+      "inversedBy": "product_variants"
     },
     "products": {
       "type": "relation",

@@ -35,6 +35,12 @@
       "type": "string",
       "required": true,
       "unique": true
+    },
+    "product_variants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product-variant.product-variant",
+      "inversedBy": "options"
     }
   }
 }
