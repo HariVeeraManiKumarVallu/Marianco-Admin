@@ -34,9 +34,6 @@
       "type": "integer",
       "min": 0
     },
-    "variants": {
-      "type": "json"
-    },
     "images": {
       "type": "json"
     },
@@ -50,11 +47,11 @@
       "required": true,
       "min": 0
     },
-    "mdDescription": {
-      "type": "richtext"
-    },
-    "longDescription": {
-      "type": "blocks"
+    "variants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product-variant.product-variant",
+      "mappedBy": "products"
     }
   }
 }

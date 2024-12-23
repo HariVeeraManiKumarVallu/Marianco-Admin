@@ -1,20 +1,14 @@
 export default {
   async afterCreate(e) {
     try {
-      // console.log('Full params:', e.params)
-      // console.log('Full result:', e.result)
-
       const eventId = e.params.data.event.connect[0].id
-      // console.log('Event ID from params:', eventId)
 
       const event = await strapi
-        .documents('api::event.event')
-        .findFirst({ filters: { id: eventId } })
-
-      console.log('Found event:', event)
+        .service('api::event.event')
+        .findOne({ filters: { id: eventId } })
 
       const res = await strapi
-        .documents('api::event-attendee.event-attendee')
+        .service('api::event-attendee.event-attendee')
         .findMany({
           filters: {
             event: eventId,
@@ -22,14 +16,12 @@ export default {
           select: ['participants'],
         })
 
-      console.log('Results:', res)
-
       const totalParticipants = res.reduce(
         (sum, attendee) => sum + (attendee.participants || 0),
         0
       )
 
-      await strapi.documents('api::event.event').update({
+      await strapi.service('api::event.event').update({
         documentId: event.documentId,
         data: { totalAttending: totalParticipants },
         status: 'published',

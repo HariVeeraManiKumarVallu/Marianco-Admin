@@ -524,6 +524,96 @@ export interface ApiProductCategoryProductCategory
   };
 }
 
+export interface ApiProductOptionProductOption
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_options';
+  info: {
+    description: '';
+    displayName: 'Product Option';
+    pluralName: 'product-options';
+    singularName: 'product-option';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-option.product-option'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    optionId: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    type: Schema.Attribute.Enumeration<['color', 'size', 'paper']> &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductVariantProductVariant
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_variants';
+  info: {
+    description: '';
+    displayName: 'Product Variant';
+    pluralName: 'product-variants';
+    singularName: 'product-variant';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isAvailable: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
+    isDefault: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+    isEnabled: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-variant.product-variant'
+    > &
+      Schema.Attribute.Private;
+    options: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-option.product-option'
+    >;
+    products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
+    publishedAt: Schema.Attribute.DateTime;
+    quantity: Schema.Attribute.Integer;
+    sku: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Private &
+      Schema.Attribute.Unique;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    variantId: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    weight: Schema.Attribute.Integer;
+  };
+}
+
 export interface ApiProductProduct extends Struct.CollectionTypeSchema {
   collectionName: 'products';
   info: {
@@ -558,8 +648,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'api::product.product'
     > &
       Schema.Attribute.Private;
-    longDescription: Schema.Attribute.Blocks;
-    mdDescription: Schema.Attribute.RichText;
     popularity: Schema.Attribute.Integer &
       Schema.Attribute.SetMinMax<
         {
@@ -579,7 +667,10 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    variants: Schema.Attribute.JSON;
+    variants: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::product-variant.product-variant'
+    >;
   };
 }
 
@@ -1138,6 +1229,8 @@ declare module '@strapi/strapi' {
       'api::event-attendee.event-attendee': ApiEventAttendeeEventAttendee;
       'api::event.event': ApiEventEvent;
       'api::product-category.product-category': ApiProductCategoryProductCategory;
+      'api::product-option.product-option': ApiProductOptionProductOption;
+      'api::product-variant.product-variant': ApiProductVariantProductVariant;
       'api::product.product': ApiProductProduct;
       'api::team-member.team-member': ApiTeamMemberTeamMember;
       'plugin::content-releases.release': PluginContentReleasesRelease;

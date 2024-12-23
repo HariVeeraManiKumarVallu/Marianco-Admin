@@ -183,49 +183,49 @@ async function addProduct({
   )
   const data = (await res.json()) as Product
 
-  const formattedData: ProductData = {
-    supplierProductId: data.id,
-    title: data.title,
-    longDescription: JSON.stringify(data.description),
-    description: data.description,
-    mdDescription: data.description,
-    basePrice: Math.min(...data.variants.map(v => v.price)),
-    variants: data.variants
-      .filter(v => v.is_enabled)
-      .map(variant => ({
-        id: variant.id,
-        price: variant.price,
-        isEnabled: variant.is_enabled,
-        isDefault: variant.is_default,
-        isAvailable: variant.is_available,
-        options: variant.options
-          .sort((a: number, b: number) => a - b)
-          .map(optionId => {
-            const optionObj = data.options.find(o =>
-              o.values.some(v => v.id === optionId)
-            )
-            const selectedValue = optionObj?.values.find(v => v.id === optionId)
+  await strapi
+    .service('api::product-option.product-option')
+    .addProductOptions(data.options)
 
-            return {
-              type: optionObj?.type,
-              id: optionId,
-              name: selectedValue.title,
-              value: selectedValue.colors?.[0] ?? selectedValue.title,
-            }
-          }),
-      })),
-    images: data.images.map(image => ({
-      src: image.src,
-      variantIds: image.variant_ids,
-      is_default: image.is_default,
-    })),
-  }
+  // const formattedData: ProductData = {
+  //   supplierProductId: data.id,
+  //   title: data.title,
+  //   description: data.description,
+  //   basePrice: Math.min(...data.variants.map(v => v.price)),
+  //   variants: data.variants
+  //     .filter(v => v.is_enabled)
+  //     .map(variant => ({
+  //       id: variant.id,
+  //       price: variant.price,
+  //       isEnabled: variant.is_enabled,
+  //       isDefault: variant.is_default,
+  //       isAvailable: variant.is_available,
+  //       options: variant.options
+  //         .sort((a: number, b: number) => a - b)
+  //         .map(optionId => {
+  //           const optionObj = data.options.find(o =>
+  //             o.values.some(v => v.id === optionId)
+  //           )
+  //           const selectedValue = optionObj?.values.find(v => v.id === optionId)
 
-  const newProduct = await strapi.service('api::product.product').create({
-    data: formattedData,
-  })
+  //           return {
+  //             type: optionObj?.type,
+  //             id: optionId,
+  //             name: selectedValue.title,
+  //             value: selectedValue.colors?.[0] ?? selectedValue.title,
+  //           }
+  //         }),
+  //     })),
+  //   images: data.images.map(image => ({
+  //     src: image.src,
+  //     variantIds: image.variant_ids,
+  //     is_default: image.is_default,
+  //   })),
+  // }
 
-  console.log(newProduct)
+  // const newProduct = await strapi.service('api::product.product').create({
+  //   data: formattedData,
+  // })
 }
 
 type ProductResponse = {
@@ -254,7 +254,7 @@ type Product = {
   images: ProductImage[]
 }
 
-type ProductOption = {
+export type ProductOption = {
   name: string
   type: string
   values: OptionValue[]
@@ -267,7 +267,7 @@ type OptionValue = {
   colors?: string[]
 }
 
-type Variant = {
+export type Variant = {
   id: number
   sku: string
   cost: number
