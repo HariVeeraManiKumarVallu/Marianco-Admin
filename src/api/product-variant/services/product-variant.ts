@@ -48,10 +48,10 @@ export default factories.createCoreService(
         })
 
       if (existingVariants.length === 0) {
-        await Promise.all(
+        const addedVariants = await Promise.all(
           createProductVariantsDb(formattedVariants, optionsMap)
         )
-        return
+        return addedVariants.map(variant => variant.documentId)
       }
 
       const existingVariantIds = new Set(
@@ -63,8 +63,16 @@ export default factories.createCoreService(
       )
 
       if (newVariants.length > 0) {
-        await Promise.all(createProductVariantsDb(newVariants, optionsMap))
+        const addedVariants = await Promise.all(
+          createProductVariantsDb(newVariants, optionsMap)
+        )
+        return [
+          ...existingVariants.map(variant => variant.documentId),
+          ...addedVariants.map(variant => variant.documentId),
+        ]
       }
+
+      return existingVariants.map(variant => variant.documentId)
     },
   })
 )
@@ -81,7 +89,7 @@ function createProductVariantsDb(
           connect: options.map(o => optionsMap.get(String(o))),
         },
       },
-      fields: 'id',
+      fields: 'documentId',
     })
   )
 }

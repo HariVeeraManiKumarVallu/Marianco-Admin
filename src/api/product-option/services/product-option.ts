@@ -39,7 +39,7 @@ export default factories.createCoreService(
             })
           )
         )
-        return [...createdOptions, ...existingOptions]
+        return createdOptions
       }
 
       const existingOptionIds = new Set(

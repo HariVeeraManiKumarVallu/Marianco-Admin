@@ -534,7 +534,7 @@ export interface ApiProductOptionProductOption
     singularName: 'product-option';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -576,7 +576,7 @@ export interface ApiProductVariantProductVariant
     singularName: 'product-variant';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;

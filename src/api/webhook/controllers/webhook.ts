@@ -31,23 +31,9 @@ type PrintifyWebhookPayload = {
 type ProductData = {
   supplierProductId: string
   title: string
-  longDescription?: string
   description?: string
-  mdDescription?: string
   basePrice: number
-  variants: {
-    id: number
-    price: number
-    isEnabled: boolean
-    isDefault: boolean
-    isAvailable: boolean
-    options: {
-      type: string
-      id: number
-      name: string
-      value: string
-    }[]
-  }[]
+  variants: string[]
   images: {
     src: string
     variantIds: number[]
@@ -187,49 +173,28 @@ async function addProduct({
     .service('api::product-option.product-option')
     .addProductOptions(data.options)
 
-  await strapi
+  const variantsInDb = await strapi
     .service('api::product-variant.product-variant')
     .addProductVariants(data.variants, optionsInDb)
 
-  // const formattedData: ProductData = {
-  //   supplierProductId: data.id,
-  //   title: data.title,
-  //   description: data.description,
-  //   basePrice: Math.min(...data.variants.map(v => v.price)),
-  //   variants: data.variants
-  //     .filter(v => v.is_enabled)
-  //     .map(variant => ({
-  //       id: variant.id,
-  //       price: variant.price,
-  //       isEnabled: variant.is_enabled,
-  //       isDefault: variant.is_default,
-  //       isAvailable: variant.is_available,
-  //       options: variant.options
-  //         .sort((a: number, b: number) => a - b)
-  //         .map(optionId => {
-  //           const optionObj = data.options.find(o =>
-  //             o.values.some(v => v.id === optionId)
-  //           )
-  //           const selectedValue = optionObj?.values.find(v => v.id === optionId)
+  await strapi.documents('api::product.product').create({
+    data: {
+      supplierProductId: data.id,
+      title: data.title,
+      description: data.description,
+      basePrice: Math.min(...data.variants.map(v => v.price)),
+      variants: {
+        connect: variantsInDb,
+      },
 
-  //           return {
-  //             type: optionObj?.type,
-  //             id: optionId,
-  //             name: selectedValue.title,
-  //             value: selectedValue.colors?.[0] ?? selectedValue.title,
-  //           }
-  //         }),
-  //     })),
-  //   images: data.images.map(image => ({
-  //     src: image.src,
-  //     variantIds: image.variant_ids,
-  //     is_default: image.is_default,
-  //   })),
-  // }
-
-  // const newProduct = await strapi.service('api::product.product').create({
-  //   data: formattedData,
-  // })
+      images: data.images.map(image => ({
+        src: image.src,
+        variantIds: image.variant_ids,
+        isDefault: image.is_default,
+      })),
+    },
+    fields: 'documentId',
+  })
 }
 
 type ProductResponse = {
@@ -248,7 +213,7 @@ type ProductResponse = {
   total: number
 }
 
-type Product = {
+export type Product = {
   id: string
   title: string
   description: string
