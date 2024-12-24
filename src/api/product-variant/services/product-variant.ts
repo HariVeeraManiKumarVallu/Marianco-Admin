@@ -66,10 +66,9 @@ export default factories.createCoreService(
         const addedVariants = await Promise.all(
           createProductVariantsDb(newVariants, optionsMap)
         )
-        return [
-          ...existingVariants.map(variant => variant.documentId),
-          ...addedVariants.map(variant => variant.documentId),
-        ]
+        return [...existingVariants, ...addedVariants].map(
+          variant => variant.documentId
+        )
       }
 
       return existingVariants.map(variant => variant.documentId)

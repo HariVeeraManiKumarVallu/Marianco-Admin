@@ -19,7 +19,7 @@
     "description": {
       "type": "text"
     },
-    "product_category": {
+    "productCategory": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::product-category.product-category",

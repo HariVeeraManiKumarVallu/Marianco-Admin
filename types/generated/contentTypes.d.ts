@@ -730,7 +730,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
         },
         number
       >;
-    product_category: Schema.Attribute.Relation<
+    productCategory: Schema.Attribute.Relation<
       'manyToOne',
       'api::product-category.product-category'
     >;
