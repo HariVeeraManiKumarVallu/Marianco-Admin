@@ -1,0 +1,64 @@
+{
+  "kind": "collectionType",
+  "collectionName": "skus",
+  "info": {
+    "singularName": "sku",
+    "pluralName": "skus",
+    "displayName": "SKU",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "skuId": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "cost": {
+      "type": "integer",
+      "min": 0
+    },
+    "price": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "title": {
+      "type": "string"
+    },
+    "product_variant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-variant.product-variant",
+      "inversedBy": "skus"
+    },
+    "weight": {
+      "type": "integer",
+      "min": 0
+    },
+    "isEnabled": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "isDefault": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "isAvailable": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "skus"
+    }
+  }
+}

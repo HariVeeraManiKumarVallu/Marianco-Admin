@@ -12,49 +12,22 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "isAvailable": {
-      "type": "boolean",
-      "default": true,
-      "required": true
-    },
-    "isDefault": {
-      "type": "boolean",
-      "default": false,
-      "required": true
-    },
-    "isEnabled": {
-      "type": "boolean",
-      "default": true,
-      "required": true
-    },
     "options": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::product-option.product-option",
       "inversedBy": "product_variants"
     },
-    "products": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::product.product",
-      "inversedBy": "variants"
-    },
     "variantId": {
       "type": "string",
       "unique": true,
       "required": true
     },
-    "sku": {
-      "type": "string",
-      "unique": true,
-      "required": true,
-      "private": true
-    },
-    "weight": {
-      "type": "integer"
-    },
-    "quantity": {
-      "type": "integer"
+    "skus": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::sku.sku",
+      "mappedBy": "product_variant"
     }
   }
 }

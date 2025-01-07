@@ -19,51 +19,59 @@ export default factories.createCoreService(
       )
       const optionIds = formattedOptions.map(option => option.optionId)
 
-      const existingOptions = await strapi
-        .documents('api::product-option.product-option')
-        .findMany({
-          filters: {
-            optionId: {
-              $in: optionIds,
+      try {
+        const existingOptions = await strapi
+          .documents('api::product-option.product-option')
+          .findMany({
+            filters: {
+              optionId: {
+                $in: optionIds,
+              },
             },
-          },
-          fields: 'optionId',
-        })
+            fields: 'optionId',
+          })
 
-      if (existingOptions.length === 0) {
-        const createdOptions = await Promise.all(
-          formattedOptions.map(option =>
-            strapi.documents('api::product-option.product-option').create({
-              data: option,
-              fields: 'optionId',
-            })
+        if (existingOptions.length === 0) {
+          const createdOptions = await Promise.all(
+            formattedOptions.map(option =>
+              strapi.documents('api::product-option.product-option').create({
+                data: option,
+                fields: 'optionId',
+              })
+            )
           )
-        )
-        return createdOptions
-      }
+          return createdOptions
+        }
 
-      const existingOptionIds = new Set(
-        existingOptions.map(opt => opt.optionId)
-      )
-
-      const newOptions = formattedOptions.filter(
-        option => !existingOptionIds.has(option.optionId)
-      )
-
-      if (newOptions.length > 0) {
-        const createdOptions = await Promise.all(
-          newOptions.map(option =>
-            strapi.documents('api::product-option.product-option').create({
-              data: option,
-              fields: 'optionId',
-            })
-          )
+        const existingOptionIds = new Set(
+          existingOptions.map(opt => opt.optionId)
         )
 
-        return [...existingOptions, ...createdOptions]
+        const newOptions = formattedOptions.filter(
+          option => !existingOptionIds.has(option.optionId)
+        )
+
+        if (newOptions.length > 0) {
+          const createdOptions = await Promise.all(
+            newOptions.map(option =>
+              strapi.documents('api::product-option.product-option').create({
+                data: option,
+                fields: 'optionId',
+              })
+            )
+          )
+
+          return [...existingOptions, ...createdOptions]
+        }
+
+        return existingOptions
+
+      }
+      catch (error) {
+        console.log(error.details.errors)
       }
 
-      return existingOptions
+
     },
   })
 )

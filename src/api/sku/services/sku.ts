@@ -1,0 +1,21 @@
+/**
+ * sku service
+ */
+
+import { factories } from '@strapi/strapi';
+import { Sku } from '../../webhook/controllers/webhook';
+
+export default factories.createCoreService('api::sku.sku', ({ strapi }) => ({
+	async addProductSkus(skus: Sku[], variants: { id: String, documentId: string, variantId: string }[]) {
+		const variantsMap = new Map()
+		for (const variant of variants) { variantsMap.set(variant.variantId, variant.documentId) }
+		const createdSkus = await Promise.all(skus.map((sku) => strapi.documents('api::sku.sku').create({
+			data: {
+				...sku, variant: { connect: variantsMap.get(sku.variantId), }
+				,
+			},
+			fields: 'documentId',
+		})))
+		return createdSkus.map(s => s.documentId)
+	},
+}))

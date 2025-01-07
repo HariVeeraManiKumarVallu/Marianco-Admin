@@ -29,7 +29,7 @@ type PrintifyWebhookPayload = {
 }
 
 type ProductData = {
-  supplierProductId: string
+  productId: string
   title: string
   description?: string
   basePrice: number
@@ -169,22 +169,49 @@ async function addProduct({
   )
   const data = (await res.json()) as Product
 
+  const variants = []
+
+  const skus = data.variants
+    .filter(v => v.is_enabled)
+    .map(
+      ({
+        is_printify_express_eligible,
+        id,
+        grams,
+        options,
+        sku,
+        ...variant
+      }) => {
+        const variantId = id.toString()
+        variants.push({ variantId, options })
+        return {
+          variantId,
+          skuId: sku,
+          weight: grams,
+          ...variant,
+        }
+      }
+    )
   const optionsInDb = await strapi
     .service('api::product-option.product-option')
     .addProductOptions(data.options)
 
   const variantsInDb = await strapi
     .service('api::product-variant.product-variant')
-    .addProductVariants(data.variants, optionsInDb)
+    .addProductVariants(variants, optionsInDb)
+
+  const skusInDb = await strapi
+    .service('api::sku.sku')
+    .addProductSkus(skus, variantsInDb)
 
   await strapi.documents('api::product.product').create({
     data: {
-      supplierProductId: data.id,
+      productId: data.id,
       title: data.title,
       description: data.description,
-      basePrice: Math.min(...data.variants.map(v => v.price)),
-      variants: {
-        connect: variantsInDb,
+      basePrice: Math.min(...skus.map(sku => sku.price)),
+      skus: {
+        connect: skusInDb,
       },
 
       images: data.images.map(image => ({
@@ -219,7 +246,7 @@ export type Product = {
   description: string
   tags: string[]
   options: ProductOption[]
-  variants: Variant[]
+  variants: VariantPrintify[]
   images: ProductImage[]
 }
 
@@ -237,7 +264,12 @@ type OptionValue = {
 }
 
 export type Variant = {
-  id: number
+  variantId: string
+  options: number[]
+}
+
+type VariantPrintify = {
+  id: number,
   sku: string
   cost: number
   price: number
@@ -247,7 +279,21 @@ export type Variant = {
   is_default: boolean
   is_available: boolean
   is_printify_express_eligible: boolean
+  quantity: number
   options: number[]
+}
+
+export type Sku = {
+  skuId: string
+  variantId: string
+  cost: number
+  price: number
+  title: string
+  grams: number
+  is_enabled: boolean
+  is_default: boolean
+  is_available: boolean
+  is_printify_express_eligible: boolean
   quantity: number
 }
 

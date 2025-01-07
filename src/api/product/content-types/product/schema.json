@@ -37,7 +37,7 @@
     "images": {
       "type": "json"
     },
-    "supplierProductId": {
+    "productId": {
       "type": "string",
       "required": true,
       "unique": true
@@ -47,11 +47,17 @@
       "required": true,
       "min": 0
     },
-    "variants": {
+    "order_items": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::product-variant.product-variant",
-      "mappedBy": "products"
+      "relation": "oneToMany",
+      "target": "api::order-item.order-item",
+      "mappedBy": "product"
+    },
+    "skus": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::sku.sku",
+      "mappedBy": "product"
     }
   }
 }

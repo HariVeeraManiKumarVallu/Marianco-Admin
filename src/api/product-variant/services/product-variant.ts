@@ -9,32 +9,17 @@ export default factories.createCoreService(
   'api::product-variant.product-variant',
   ({ strapi }) => ({
     async addProductVariants(
-      productVariants: Variant[],
-      productOptions: { id: number; documentId: string; optionId: string }[]
+      variants: Variant[],
+      options: { id: number; documentId: string; optionId: string }[]
     ) {
       const optionsMap = new Map()
 
-      for (const option of productOptions) {
+      for (const option of options) {
         optionsMap.set(option.optionId, option.documentId)
       }
 
-      const formattedVariants = productVariants
-        .filter(v => v.is_enabled)
-        .map(
-          ({
-            is_printify_express_eligible,
-            cost,
-            title,
-            id,
-            grams,
-            ...variant
-          }) => ({
-            ...variant,
-            variantId: id.toString(),
-            weight: grams,
-          })
-        )
-      const variantIds = formattedVariants.map(variant => variant.variantId)
+
+      const variantIds = variants.map(variant => variant.variantId)
 
       const existingVariants = await strapi
         .documents('api::product-variant.product-variant')
@@ -49,16 +34,16 @@ export default factories.createCoreService(
 
       if (existingVariants.length === 0) {
         const addedVariants = await Promise.all(
-          createProductVariantsDb(formattedVariants, optionsMap)
+          createProductVariantsDb(variants, optionsMap)
         )
-        return addedVariants.map(variant => variant.documentId)
+        return addedVariants
       }
 
       const existingVariantIds = new Set(
         existingVariants.map(variant => variant.variantId)
       )
 
-      const newVariants = formattedVariants.filter(
+      const newVariants = variants.filter(
         variant => !existingVariantIds.has(variant.variantId)
       )
 
@@ -66,29 +51,27 @@ export default factories.createCoreService(
         const addedVariants = await Promise.all(
           createProductVariantsDb(newVariants, optionsMap)
         )
-        return [...existingVariants, ...addedVariants].map(
-          variant => variant.documentId
-        )
+        return [...existingVariants, ...addedVariants]
       }
 
-      return existingVariants.map(variant => variant.documentId)
+      return existingVariants
     },
   })
 )
 
 function createProductVariantsDb(
-  variants: any[],
+  variants: { variantId: string, options: number[] }[],
   optionsMap: Map<string, string>
 ) {
-  return variants.map(({ options, ...variant }) =>
+  return variants.map(({ variantId, options }) =>
     strapi.documents('api::product-variant.product-variant').create({
       data: {
-        ...variant,
+        variantId,
         options: {
           connect: options.map(o => optionsMap.get(String(o))),
         },
       },
-      fields: 'documentId',
+      fields: 'variantId',
     })
   )
 }

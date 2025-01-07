@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "orderNr": {
+      "type": "integer",
+      "unique": true,
+      "required": true,
+      "min": 100000
+    },
+    "totalPrice": {
+      "type": "decimal",
+      "required": true
+    },
+    "isPaid": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "orderItems": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order-item.order-item",
+      "mappedBy": "order"
+    }
+  }
+}
