@@ -12,22 +12,57 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "options": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::product-option.product-option",
-      "inversedBy": "product_variants"
-    },
     "variantId": {
       "type": "string",
       "unique": true,
       "required": true
     },
+    "options": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product-option.product-option",
+      "mappedBy": "variants"
+    },
     "skus": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::sku.sku",
-      "mappedBy": "product_variant"
+      "mappedBy": "variant"
+    },
+    "cost": {
+      "type": "integer",
+      "min": 0,
+      "private": true
+    },
+    "price": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "weight": {
+      "type": "integer",
+      "min": 0
+    },
+    "isEnabled": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "isDefault": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "isAvailable": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "products": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product.product",
+      "mappedBy": "variants"
     }
   }
 }

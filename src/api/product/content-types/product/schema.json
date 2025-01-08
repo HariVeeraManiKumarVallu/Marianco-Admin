@@ -51,6 +51,7 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::order-item.order-item",
+      "private": true,
       "mappedBy": "product"
     },
     "skus": {
@@ -58,6 +59,12 @@
       "relation": "oneToMany",
       "target": "api::sku.sku",
       "mappedBy": "product"
+    },
+    "variants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product-variant.product-variant",
+      "inversedBy": "products"
     }
   }
 }

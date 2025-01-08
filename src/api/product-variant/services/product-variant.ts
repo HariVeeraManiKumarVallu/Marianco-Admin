@@ -60,13 +60,13 @@ export default factories.createCoreService(
 )
 
 function createProductVariantsDb(
-  variants: { variantId: string, options: number[] }[],
+  variants: Variant[],
   optionsMap: Map<string, string>
 ) {
-  return variants.map(({ variantId, options }) =>
+  return variants.map(({ options, ...variant }) =>
     strapi.documents('api::product-variant.product-variant').create({
       data: {
-        variantId,
+        ...variant,
         options: {
           connect: options.map(o => optionsMap.get(String(o))),
         },
