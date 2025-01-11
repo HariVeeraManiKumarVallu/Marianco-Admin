@@ -65,6 +65,18 @@
       "relation": "manyToMany",
       "target": "api::product-variant.product-variant",
       "inversedBy": "products"
+    },
+    "optionsValues": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product-option-value.product-option-value",
+      "inversedBy": "products"
+    },
+    "optionTypes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product-option-type.product-option-type",
+      "inversedBy": "products"
     }
   }
 }

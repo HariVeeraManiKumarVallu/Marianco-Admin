@@ -170,6 +170,7 @@ async function addProduct({
   const data = (await res.json()) as Product
 
   const skus = []
+  const optionIds = []
 
   const formattedVariants = data.variants
     .filter(v => v.is_enabled)
@@ -177,6 +178,7 @@ async function addProduct({
       (variant: VariantPrintify) => {
         const variantId = variant.id.toString()
         skus.push({ variantId, skuId: variant.sku })
+        optionIds.push(...variant.options)
         return {
           variantId,
           cost: variant.cost,
@@ -190,17 +192,34 @@ async function addProduct({
       }
     )
 
-  const optionsInDb = await strapi
-    .service('api::product-option.product-option')
-    .addProductOptions(data.options)
+  const uniqueOptions = new Set(optionIds)
 
-  const variantsInDb = await strapi
+  const selectedOptions = data.options.map(option => ({
+    ...option, values: option.values.filter(v => uniqueOptions.has(v.id)).map(v => {
+      const variantId = formattedVariants.find(variant => variant.options.find(option => option === v.id)).variantId
+      if (option.type === 'color') {
+        return {
+          ...v, previewUrl: data.images.find(img => img.variant_ids.some(id => id.toString() === variantId)).src
+        }
+      }
+      return v
+    })
+  }))
+
+
+  const optionTypes = await strapi.service('api::product-option-type.product-option-type').getOptionTypes(selectedOptions)
+
+  const optionValues = await strapi
+    .service('api::product-option-value.product-option-value')
+    .addProductOptions(selectedOptions, optionTypes)
+
+  const variants = await strapi
     .service('api::product-variant.product-variant')
-    .addProductVariants(formattedVariants, optionsInDb)
+    .addProductVariants(formattedVariants, optionValues)
 
   const skusInDb = await strapi
     .service('api::sku.sku')
-    .addProductSkus(skus, variantsInDb)
+    .addProductSkus(skus, variants)
 
   await strapi.documents('api::product.product').create({
     data: {
@@ -212,7 +231,13 @@ async function addProduct({
         connect: skusInDb,
       },
       variants: {
-        connect: variantsInDb.map(variant => variant.documentId)
+        connect: variants.map(variant => variant.documentId)
+      },
+      optionsValues: {
+        connect: optionValues.map(value => value.documentId),
+      },
+      optionTypes: {
+        connect: optionTypes.map(type => type.documentId)
       },
       images: data.images.map(image => ({
         src: image.src,
@@ -251,16 +276,20 @@ export type Product = {
 }
 
 export type ProductOption = {
-  name: string
-  type: string
   values: OptionValue[]
   display_in_preview: boolean
-}
+} & OptionType
 
 type OptionValue = {
   id: number
   title: string
+  previewUrl?: string
   colors?: string[]
+}
+
+export type OptionType = {
+  name: string,
+  type: string
 }
 
 export type Variant = {

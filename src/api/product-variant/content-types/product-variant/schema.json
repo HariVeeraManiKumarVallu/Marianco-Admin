@@ -20,7 +20,7 @@
     "options": {
       "type": "relation",
       "relation": "manyToMany",
-      "target": "api::product-option.product-option",
+      "target": "api::product-option-value.product-option-value",
       "mappedBy": "variants"
     },
     "skus": {

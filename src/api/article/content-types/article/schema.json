@@ -45,6 +45,9 @@
         "images",
         "files"
       ]
+    },
+    "test": {
+      "type": "richtext"
     }
   }
 }
