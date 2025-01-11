@@ -399,6 +399,7 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     publishedDate: Schema.Attribute.Date & Schema.Attribute.Required;
     slug: Schema.Attribute.UID<'title'>;
     summary: Schema.Attribute.Text;
+    test: Schema.Attribute.RichText;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -608,14 +609,13 @@ export interface ApiProductCategoryProductCategory
   };
 }
 
-export interface ApiProductOptionProductOption
+export interface ApiProductOptionTypeProductOptionType
   extends Struct.CollectionTypeSchema {
-  collectionName: 'product_options';
+  collectionName: 'product_option_types';
   info: {
-    description: '';
-    displayName: 'Product Option';
-    pluralName: 'product-options';
-    singularName: 'product-option';
+    displayName: 'Product Option Type';
+    pluralName: 'product-option-types';
+    singularName: 'product-option-type';
   };
   options: {
     draftAndPublish: false;
@@ -627,17 +627,61 @@ export interface ApiProductOptionProductOption
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::product-option.product-option'
+      'api::product-option-type.product-option-type'
     > &
       Schema.Attribute.Private;
-    name: Schema.Attribute.String & Schema.Attribute.Required;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    product_option_values: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-option-value.product-option-value'
+    >;
+    products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
+    publishedAt: Schema.Attribute.DateTime;
+    type: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductOptionValueProductOptionValue
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_options_value';
+  info: {
+    description: '';
+    displayName: 'Product Option Value';
+    pluralName: 'product-option-values';
+    singularName: 'product-option-value';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    color: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-option-value.product-option-value'
+    > &
+      Schema.Attribute.Private;
     optionId: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
+    optionType: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::product-option-type.product-option-type'
+    >;
+    previewUrl: Schema.Attribute.String;
+    products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String & Schema.Attribute.Required;
-    type: Schema.Attribute.Enumeration<['color', 'size', 'paper']> &
-      Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -689,7 +733,7 @@ export interface ApiProductVariantProductVariant
       Schema.Attribute.Private;
     options: Schema.Attribute.Relation<
       'manyToMany',
-      'api::product-option.product-option'
+      'api::product-option-value.product-option-value'
     >;
     price: Schema.Attribute.Integer &
       Schema.Attribute.Required &
@@ -752,6 +796,14 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'api::product.product'
     > &
       Schema.Attribute.Private;
+    optionsValues: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::product-option-value.product-option-value'
+    >;
+    optionTypes: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::product-option-type.product-option-type'
+    >;
     order_items: Schema.Attribute.Relation<
       'oneToMany',
       'api::order-item.order-item'
@@ -1374,7 +1426,8 @@ declare module '@strapi/strapi' {
       'api::order-item.order-item': ApiOrderItemOrderItem;
       'api::order.order': ApiOrderOrder;
       'api::product-category.product-category': ApiProductCategoryProductCategory;
-      'api::product-option.product-option': ApiProductOptionProductOption;
+      'api::product-option-type.product-option-type': ApiProductOptionTypeProductOptionType;
+      'api::product-option-value.product-option-value': ApiProductOptionValueProductOptionValue;
       'api::product-variant.product-variant': ApiProductVariantProductVariant;
       'api::product.product': ApiProductProduct;
       'api::sku.sku': ApiSkuSku;
