@@ -613,6 +613,7 @@ export interface ApiProductOptionTypeProductOptionType
   extends Struct.CollectionTypeSchema {
   collectionName: 'product_option_types';
   info: {
+    description: '';
     displayName: 'Product Option Type';
     pluralName: 'product-option-types';
     singularName: 'product-option-type';
@@ -633,7 +634,7 @@ export interface ApiProductOptionTypeProductOptionType
     name: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
-    product_option_values: Schema.Attribute.Relation<
+    optionValues: Schema.Attribute.Relation<
       'oneToMany',
       'api::product-option-value.product-option-value'
     >;
@@ -671,7 +672,7 @@ export interface ApiProductOptionValueProductOptionValue
       'api::product-option-value.product-option-value'
     > &
       Schema.Attribute.Private;
-    optionId: Schema.Attribute.String &
+    optionId: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
     optionType: Schema.Attribute.Relation<
@@ -749,7 +750,7 @@ export interface ApiProductVariantProductVariant
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    variantId: Schema.Attribute.String &
+    variantId: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
     weight: Schema.Attribute.Integer &
@@ -796,13 +797,13 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'api::product.product'
     > &
       Schema.Attribute.Private;
-    optionsValues: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::product-option-value.product-option-value'
-    >;
     optionTypes: Schema.Attribute.Relation<
       'manyToMany',
       'api::product-option-type.product-option-type'
+    >;
+    optionValues: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::product-option-value.product-option-value'
     >;
     order_items: Schema.Attribute.Relation<
       'oneToMany',
