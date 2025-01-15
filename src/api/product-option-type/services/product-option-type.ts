@@ -32,6 +32,6 @@ export default factories.createCoreService('api::product-option-type.product-opt
 			}))
 		)
 
-		return [...optionTypesInDb, newOptionTypes]
+		return [...optionTypesInDb, ...newOptionTypes]
 	}
 }));

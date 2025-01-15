@@ -4,6 +4,7 @@
 
 import { factories } from '@strapi/strapi'
 import { OptionType, PrintifyOption, } from '../../webhook/controllers/webhook'
+import util from 'util'
 
 export default factories.createCoreService(
   'api::product-option-value.product-option-value',
@@ -77,6 +78,8 @@ function createOptions(options: {
   color?: string;
   previewUrl?: string;
 }[], optionTypesMap: Map<string, string>) {
+
+  console.log(util.inspect({ options, optionTypesMap }, false, null, true))
 
   return options.map(({ type, ...option }) =>
     strapi.documents('api::product-option-value.product-option-value').create({

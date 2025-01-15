@@ -4,14 +4,13 @@
 
 import { factories } from '@strapi/strapi'
 import { Variant } from '../../webhook/controllers/webhook'
-import util from 'util'
 
 export default factories.createCoreService(
   'api::product-variant.product-variant',
   ({ strapi }) => ({
     async addProductVariants(
       variants: Variant[],
-      options: { id: number; documentId: string; optionId: string }[]
+      options: { id: number; documentId: string; optionId: number }[]
     ) {
       const optionsMap = new Map()
 
@@ -61,14 +60,14 @@ export default factories.createCoreService(
 
 function createProductVariantsDb(
   variants: Variant[],
-  optionsMap: Map<string, string>
+  optionsMap: Map<number, string>
 ) {
   return variants.map(({ options, ...variant }) =>
     strapi.documents('api::product-variant.product-variant').create({
       data: {
         ...variant,
         options: {
-          connect: options.map(o => optionsMap.get(String(o))),
+          connect: options.map(o => optionsMap.get(o)),
         },
       },
       fields: 'variantId',
