@@ -167,18 +167,18 @@ async function addProduct({
       },
     }
   )
-  const data = (await res.json()) as Product
+  const data = (await res.json()) as PrintifyProduct
 
   const skus = []
-  const optionIds = []
+  const optionIds = new Set()
 
   const formattedVariants = data.variants
     .filter(v => v.is_enabled)
     .map(
       (variant: VariantPrintify) => {
-        const variantId = variant.id.toString()
+        const variantId = variant.id
         skus.push({ variantId, skuId: variant.sku })
-        optionIds.push(...variant.options)
+        variant.options.forEach(o => optionIds.add(o))
         return {
           variantId,
           cost: variant.cost,
@@ -192,20 +192,18 @@ async function addProduct({
       }
     )
 
-  const uniqueOptions = new Set(optionIds)
 
   const selectedOptions = data.options.map(option => ({
-    ...option, values: option.values.filter(v => uniqueOptions.has(v.id)).map(v => {
+    ...option, values: option.values.filter(v => optionIds.has(v.id)).map(v => {
       const variantId = formattedVariants.find(variant => variant.options.find(option => option === v.id)).variantId
       if (option.type === 'color') {
         return {
-          ...v, previewUrl: data.images.find(img => img.variant_ids.some(id => id.toString() === variantId)).src
+          ...v, previewUrl: data.images.find(img => img.variant_ids.some(id => id === variantId)).src
         }
       }
       return v
     })
   }))
-
 
   const optionTypes = await strapi.service('api::product-option-type.product-option-type').getOptionTypes(selectedOptions)
 
@@ -233,7 +231,7 @@ async function addProduct({
       variants: {
         connect: variants.map(variant => variant.documentId)
       },
-      optionsValues: {
+      optionValues: {
         connect: optionValues.map(value => value.documentId),
       },
       optionTypes: {
@@ -251,7 +249,7 @@ async function addProduct({
 
 type ProductResponse = {
   current_page: number
-  data: Product
+  data: PrintifyProduct
   first_page_url: string
   from: number
   last_page: number
@@ -265,26 +263,30 @@ type ProductResponse = {
   total: number
 }
 
-export type Product = {
+export type PrintifyProduct = {
   id: string
   title: string
   description: string
   tags: string[]
-  options: ProductOption[]
+  options: PrintifyOption[]
   variants: VariantPrintify[]
   images: ProductImage[]
 }
 
-export type ProductOption = {
-  values: OptionValue[]
-  display_in_preview: boolean
-} & OptionType
+// type PrintifyOption = {
+//  values: PrintifyOptionValue[]
+//  display_in_preview: boolean
+//} & OptionType
 
-type OptionValue = {
-  id: number
-  title: string
-  previewUrl?: string
-  colors?: string[]
+export type PrintifyOption = {
+  name: string,
+  type: string
+  values: {
+    id: number
+    title: string
+    previewUrl?: string
+    colors?: string[]
+  }[]
 }
 
 export type OptionType = {
@@ -292,8 +294,15 @@ export type OptionType = {
   type: string
 }
 
+export type OptionValue = {
+  optionId: number
+  title: string
+  previewUrl?: string
+  colors?: string[]
+}
+
 export type Variant = {
-  variantId: string
+  variantId: number
   title: string
   cost: number
   price: number

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "product-option-type",
     "pluralName": "product-option-types",
-    "displayName": "Product Option Type"
+    "displayName": "Product Option Type",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -27,7 +28,7 @@
       "target": "api::product.product",
       "mappedBy": "optionTypes"
     },
-    "product_option_values": {
+    "optionValues": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::product-option-value.product-option-value",

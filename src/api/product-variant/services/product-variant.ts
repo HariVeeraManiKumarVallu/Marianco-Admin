@@ -4,6 +4,7 @@
 
 import { factories } from '@strapi/strapi'
 import { Variant } from '../../webhook/controllers/webhook'
+import util from 'util'
 
 export default factories.createCoreService(
   'api::product-variant.product-variant',
@@ -17,7 +18,6 @@ export default factories.createCoreService(
       for (const option of options) {
         optionsMap.set(option.optionId, option.documentId)
       }
-
 
       const variantIds = variants.map(variant => variant.variantId)
 

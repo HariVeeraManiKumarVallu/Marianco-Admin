@@ -3,25 +3,25 @@
  */
 
 import { factories } from '@strapi/strapi'
-import { OptionType, ProductOption } from '../../webhook/controllers/webhook'
+import { OptionType, PrintifyOption, } from '../../webhook/controllers/webhook'
 
 export default factories.createCoreService(
   'api::product-option-value.product-option-value',
   ({ strapi }) => ({
-    async addProductOptions(productOptions: ProductOption[], optionTypes: (OptionType & { documentId: string })[]) {
+    async addProductOptions(productOptions: PrintifyOption[], optionTypes: (OptionType & { documentId: string })[]) {
 
       const optionTypesMap = new Map()
       optionTypes.forEach(t => optionTypesMap.set(t.type, t.documentId))
 
       const formattedOptions = productOptions.flatMap(option =>
         option.values.map(value => option.type === 'color' ? {
-          optionId: value.id.toString(),
+          optionId: value.id,
           type: option.type,
           title: value.title,
           color: value?.colors[0],
           previewUrl: value?.previewUrl
         } : {
-          optionId: value.id.toString(),
+          optionId: value.id,
           type: option.type,
           title: value.title,
         })
@@ -41,19 +41,7 @@ export default factories.createCoreService(
           })
 
         if (existingOptions.length === 0) {
-          const createdOptions = await Promise.all(
-            formattedOptions.map(({ type, ...option }) =>
-              strapi.documents('api::product-option-value.product-option-value').create({
-                data: {
-                  ...option,
-                  optionTypes: {
-                    connect: optionTypesMap.get(type)
-                  },
-                },
-                fields: 'optionId',
-              })
-            )
-          )
+          const createdOptions = await Promise.all(createOptions(formattedOptions, optionTypesMap))
           return createdOptions
         }
 
@@ -66,20 +54,7 @@ export default factories.createCoreService(
         )
 
         if (newOptions.length > 0) {
-          const createdOptions = await Promise.all(
-            newOptions.map(option =>
-              strapi.documents('api::product-option-value.product-option-value').create({
-                data: {
-                  ...option,
-                  optionType: {
-                    connect: optionTypesMap.get(option.type)
-                  },
-                },
-                fields: 'optionId',
-              })
-            )
-          )
-
+          const createdOptions = await Promise.all(createOptions(newOptions, optionTypesMap))
           return [...existingOptions, ...createdOptions]
         }
 
@@ -94,3 +69,24 @@ export default factories.createCoreService(
     },
   })
 )
+
+function createOptions(options: {
+  optionId: number;
+  type: string;
+  title: string;
+  color?: string;
+  previewUrl?: string;
+}[], optionTypesMap: Map<string, string>) {
+
+  return options.map(({ type, ...option }) =>
+    strapi.documents('api::product-option-value.product-option-value').create({
+      data: {
+        ...option,
+        optionType: {
+          connect: optionTypesMap.get(type)
+        },
+      },
+      fields: 'optionId',
+    })
+  )
+}

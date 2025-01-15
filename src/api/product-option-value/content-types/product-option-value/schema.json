@@ -17,34 +17,34 @@
       "required": true,
       "unique": false
     },
-    "optionId": {
-      "type": "string",
-      "required": true,
-      "unique": true
-    },
     "variants": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::product-variant.product-variant",
       "inversedBy": "options"
     },
-    "optionType": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::product-option-type.product-option-type",
-      "inversedBy": "product_option_values"
-    },
-    "products": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::product.product",
-      "mappedBy": "optionsValues"
-    },
     "color": {
       "type": "string"
     },
     "previewUrl": {
       "type": "string"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product.product",
+      "mappedBy": "optionValues"
+    },
+    "optionType": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-option-type.product-option-type",
+      "inversedBy": "optionValues"
+    },
+    "optionId": {
+      "type": "integer",
+      "required": true,
+      "unique": true
     }
   }
 }

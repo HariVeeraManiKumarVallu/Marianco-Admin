@@ -12,11 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "variantId": {
-      "type": "string",
-      "unique": true,
-      "required": true
-    },
     "options": {
       "type": "relation",
       "relation": "manyToMany",
@@ -63,6 +58,11 @@
       "relation": "manyToMany",
       "target": "api::product.product",
       "mappedBy": "variants"
+    },
+    "variantId": {
+      "type": "integer",
+      "required": true,
+      "unique": true
     }
   }
 }
