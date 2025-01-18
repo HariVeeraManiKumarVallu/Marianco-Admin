@@ -41,3 +41,19 @@ export default {
 		}
 	}
 }
+
+async function gridPositionValidation(position: 'left' | 'top-right' | 'bottom-right') {
+	try {
+		const existingItem = await strapi.db.query('api::article.article').findOne({
+			where: { featuredGridPosition: position }
+		});
+
+		if (existingItem) {
+			throw new errors.ApplicationError(
+				`${position} position is already being used by "${existingItem.title}"`,
+				{ name: 'validation' })
+		}
+	} catch (error) {
+		console.error('Error in afterCreate:', error)
+	}
+}
