@@ -385,6 +385,11 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    featuredGridPosition: Schema.Attribute.Enumeration<
+      ['left', 'top-right', 'bottom-right', 'N/A']
+    > &
+      Schema.Attribute.Unique &
+      Schema.Attribute.DefaultTo<'N/A'>;
     image: Schema.Attribute.Media<'images' | 'files'> &
       Schema.Attribute.Required;
     isArchived: Schema.Attribute.Boolean;
@@ -399,7 +404,6 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     publishedDate: Schema.Attribute.Date & Schema.Attribute.Required;
     slug: Schema.Attribute.UID<'title'>;
     summary: Schema.Attribute.Text;
-    test: Schema.Attribute.RichText;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

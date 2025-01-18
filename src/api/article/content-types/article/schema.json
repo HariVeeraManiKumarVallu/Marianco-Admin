@@ -45,6 +45,17 @@
         "images",
         "files"
       ]
+    },
+    "featuredGridPosition": {
+      "type": "enumeration",
+      "enum": [
+        "left",
+        "top-right",
+        "bottom-right",
+        "N/A"
+      ],
+      "unique":true,
+      "default": "N/A"
     }
   }
 }
