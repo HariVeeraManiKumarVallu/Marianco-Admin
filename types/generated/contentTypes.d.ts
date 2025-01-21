@@ -386,8 +386,9 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     featuredGridPosition: Schema.Attribute.Enumeration<
-      ['left', 'top-right', 'bottom-right', 'N/A']
+      ['left', 'top right', 'bottom right', 'N/A']
     > &
+      Schema.Attribute.Required &
       Schema.Attribute.Unique &
       Schema.Attribute.DefaultTo<'N/A'>;
     image: Schema.Attribute.Media<'images' | 'files'> &

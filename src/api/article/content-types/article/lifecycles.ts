@@ -1,59 +1,54 @@
+import util from 'util'
 import { errors } from '@strapi/utils'
+
+const POSITIONS = ['left', 'top right', 'bottom right'] as const
+type Positions = typeof POSITIONS[number]
+
 export default {
 	async beforeCreate(event) {
-		try {
-			const { data } = event.params;
-			console.log(data)
+		const { params: { data }, action } = event;
+		const hasValidPosition = POSITIONS.includes(data.featuredGridPosition)
 
-			if (data.featuredGridPosition) {
-				const existingItem = await strapi.db.query('api::article.article').findOne({
-					where: { featuredGridPosition: data.featuredGridPosition }
-				});
 
-				if (existingItem) {
-					throw new errors.ApplicationError(
-						`${data.featuredGridPosition} position is already being used by "${existingItem.title}"`,
-						{ name: 'validation' })
-				}
-			}
-		} catch (error) {
-			console.error('Error in afterCreate:', error)
+		if (hasValidPosition) {
+			await gridPositionValidation(data.featuredGridPosition, data.documentId, action)
 		}
+		validateIsFeatured(data, hasValidPosition)
+		return
 	},
 	beforeUpdate: async (event) => {
-		const { data, where } = event.params;
+		const { params: { data, where }, action } = event;
+		const hasValidPosition = POSITIONS.includes(data.featuredGridPosition)
 
-		if (data.featuredGridPosition) {
-			const existingItem = await strapi.db.query('api::article.article').findOne({
-				where: {
-					featuredGridPosition: data.featuredGridPosition,
-					id: { $ne: where.id }
-				}
-			});
-
-			if (existingItem) {
-				throw new errors.ApplicationError(
-					`${data.featuredGridPosition} position is already being used by "${existingItem.title}"`,
-					{ name: 'validation', displayTime: 5000 },
-
-				);
-			}
+		if (hasValidPosition) {
+			await gridPositionValidation(data.featuredGridPosition, where.id, action)
 		}
+		validateIsFeatured(data, hasValidPosition)
+		return
 	}
 }
 
-async function gridPositionValidation(position: 'left' | 'top-right' | 'bottom-right') {
-	try {
-		const existingItem = await strapi.db.query('api::article.article').findOne({
-			where: { featuredGridPosition: position }
-		});
-
-		if (existingItem) {
-			throw new errors.ApplicationError(
-				`${position} position is already being used by "${existingItem.title}"`,
-				{ name: 'validation' })
-		}
-	} catch (error) {
-		console.error('Error in afterCreate:', error)
+async function gridPositionValidation(position: Positions, id: string, eventType: 'beforeCreate' | 'beforeUpdate') {
+	const filters = {
+		$and: eventType === 'beforeCreate' ? [{ featuredGridPosition: position }, { documentId: { $ne: id } }] : [{ featuredGridPosition: position }, { id: { $ne: id } }]
 	}
+
+	const itemWithSelectedPosition = await strapi.documents('api::article.article').findFirst({
+		filters,
+		fields: 'title'
+	});
+
+	if (itemWithSelectedPosition) {
+		throw new errors.ApplicationError(
+			`${position} position is already being used by "${itemWithSelectedPosition.title}"`,
+			{ name: 'validation', displayTime: 5000 },
+		)
+	}
+}
+
+function validateIsFeatured(data: any, hasGridPosition: boolean) {
+	if (data.isFeatured !== hasGridPosition) {
+		data.isFeatured = !data.isFeatured
+	}
+
 }
