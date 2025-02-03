@@ -47,13 +47,6 @@
       "required": true,
       "min": 0
     },
-    "order_items": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::order-item.order-item",
-      "private": true,
-      "mappedBy": "product"
-    },
     "skus": {
       "type": "relation",
       "relation": "oneToMany",

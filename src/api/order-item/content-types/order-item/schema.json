@@ -12,12 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "product": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::product.product",
-      "inversedBy": "order_items"
-    },
     "order": {
       "type": "relation",
       "relation": "manyToOne",
@@ -29,10 +23,24 @@
       "required": true,
       "min": 1
     },
-    "product_variant": {
+    "sku": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::product-variant.product-variant"
+      "relation": "manyToOne",
+      "target": "api::sku.sku",
+      "inversedBy": "order_items"
+    },
+    "price": {
+      "type": "integer"
+    },
+    "currency": {
+      "type": "enumeration",
+      "enum": [
+        "SEK",
+        "USD",
+        "EUR"
+      ],
+      "default": "SEK",
+      "required": true
     }
   }
 }

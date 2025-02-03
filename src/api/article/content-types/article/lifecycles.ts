@@ -1,4 +1,3 @@
-import util from 'util'
 import { errors } from '@strapi/utils'
 
 const POSITIONS = ['left', 'top right', 'bottom right'] as const

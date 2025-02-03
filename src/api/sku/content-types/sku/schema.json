@@ -28,6 +28,12 @@
       "relation": "manyToOne",
       "target": "api::product.product",
       "inversedBy": "skus"
+    },
+    "order_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order-item.order-item",
+      "mappedBy": "sku"
     }
   }
 }

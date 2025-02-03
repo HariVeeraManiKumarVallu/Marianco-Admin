@@ -12,10 +12,10 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "orderNr": {
+    "orderNumber": {
       "type": "integer",
       "unique": true,
-      "required": true,
+      "required": false,
       "min": 100000
     },
     "totalPrice": {
@@ -32,6 +32,22 @@
       "relation": "oneToMany",
       "target": "api::order-item.order-item",
       "mappedBy": "order"
+    },
+    "currency": {
+      "type": "enumeration",
+      "enum": [
+        "SEK",
+        "USD",
+        "EUR"
+      ],
+      "default": "USD",
+      "required": true
+    },
+    "adress": {
+      "type": "text"
+    },
+    "phone": {
+      "type": "string"
     }
   }
 }
