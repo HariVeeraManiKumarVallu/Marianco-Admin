@@ -514,6 +514,9 @@ export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    currency: Schema.Attribute.Enumeration<['SEK', 'USD', 'EUR']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'SEK'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -521,11 +524,7 @@ export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     order: Schema.Attribute.Relation<'manyToOne', 'api::order.order'>;
-    product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
-    product_variant: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::product-variant.product-variant'
-    >;
+    price: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
     quantity: Schema.Attribute.Integer &
       Schema.Attribute.Required &
@@ -535,6 +534,7 @@ export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
         },
         number
       >;
+    sku: Schema.Attribute.Relation<'manyToOne', 'api::sku.sku'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -553,9 +553,13 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    adress: Schema.Attribute.Text;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    currency: Schema.Attribute.Enumeration<['SEK', 'USD', 'EUR']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'USD'>;
     isPaid: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<false>;
@@ -566,8 +570,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::order-item.order-item'
     >;
-    orderNr: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
+    orderNumber: Schema.Attribute.Integer &
       Schema.Attribute.Unique &
       Schema.Attribute.SetMinMax<
         {
@@ -575,6 +578,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
         },
         number
       >;
+    phone: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     totalPrice: Schema.Attribute.Decimal & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
@@ -810,11 +814,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'manyToMany',
       'api::product-option-value.product-option-value'
     >;
-    order_items: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::order-item.order-item'
-    > &
-      Schema.Attribute.Private;
     popularity: Schema.Attribute.Integer &
       Schema.Attribute.SetMinMax<
         {
@@ -860,6 +859,10 @@ export interface ApiSkuSku extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::sku.sku'> &
       Schema.Attribute.Private;
+    order_items: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::order-item.order-item'
+    >;
     product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     skuId: Schema.Attribute.String &
