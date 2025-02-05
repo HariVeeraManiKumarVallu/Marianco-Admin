@@ -79,8 +79,6 @@ function createOptions(options: {
   previewUrl?: string;
 }[], optionTypesMap: Map<string, string>) {
 
-  console.log(util.inspect({ options, optionTypesMap }, false, null, true))
-
   return options.map(({ type, ...option }) =>
     strapi.documents('api::product-option-value.product-option-value').create({
       data: {

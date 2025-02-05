@@ -215,9 +215,12 @@ async function addProduct({
     .service('api::product-variant.product-variant')
     .addProductVariants(formattedVariants, optionValues)
 
+  await strapi.service('api::product-image.product-image').addProductImages(data.images, variants)
+
   const skusInDb = await strapi
     .service('api::sku.sku')
     .addProductSkus(skus, variants)
+
 
   await strapi.documents('api::product.product').create({
     data: {
@@ -237,11 +240,11 @@ async function addProduct({
       optionTypes: {
         connect: optionTypes.map(type => type.documentId)
       },
-      images: data.images.map(image => ({
-        src: image.src,
-        variantIds: image.variant_ids,
-        isDefault: image.is_default,
-      })),
+      // images: data.images.map(image => ({
+      //   src: image.src,
+      //   variantIds: image.variant_ids,
+      //   isDefault: image.is_default,
+      // })),
     },
     fields: 'documentId',
   })
@@ -335,7 +338,7 @@ export type Sku = {
   variantId: string
 }
 
-type ProductImage = {
+export type ProductImage = {
   src: string
   variant_ids: number[]
   position: string

@@ -63,6 +63,12 @@
       "type": "integer",
       "required": true,
       "unique": true
+    },
+    "images": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-image.product-image",
+      "inversedBy": "variants"
     }
   }
 }

@@ -1,11 +1,11 @@
 export default {
 	async beforeCreate(event) {
-		const maxOrderNr = await strapi.documents('api::order.order').findFirst({
+		const maxOrderNumber = await strapi.documents('api::order.order').findFirst({
 			fields: 'orderNumber',
-			sort: { orderNr: 'desc' },
+			sort: { orderNumber: 'desc' },
 		});
 
-		event.params.data.orderNr = maxOrderNr ? maxOrderNr.orderNr + 1 : 100000;
+		event.params.data.orderNumber = maxOrderNumber ? maxOrderNumber.orderNumber + 1 : 100000;
 		return
 	}
 }

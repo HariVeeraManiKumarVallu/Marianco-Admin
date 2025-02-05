@@ -48,6 +48,9 @@
     },
     "phone": {
       "type": "string"
+    },
+    "stripeId": {
+      "type": "string"
     }
   }
 }

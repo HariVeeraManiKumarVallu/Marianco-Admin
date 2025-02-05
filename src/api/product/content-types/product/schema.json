@@ -34,9 +34,6 @@
       "type": "integer",
       "min": 0
     },
-    "images": {
-      "type": "json"
-    },
     "productId": {
       "type": "string",
       "required": true,
