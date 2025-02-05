@@ -412,6 +412,36 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCustomerCustomer extends Struct.CollectionTypeSchema {
+  collectionName: 'customers';
+  info: {
+    description: '';
+    displayName: 'Customer';
+    pluralName: 'customers';
+    singularName: 'customer';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::customer.customer'
+    > &
+      Schema.Attribute.Private;
+    orders: Schema.Attribute.Relation<'oneToMany', 'api::order.order'>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiEventAttendeeEventAttendee
   extends Struct.CollectionTypeSchema {
   collectionName: 'event_attendees';
@@ -580,6 +610,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       >;
     phone: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    stripeId: Schema.Attribute.String;
     totalPrice: Schema.Attribute.Decimal & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -615,6 +646,41 @@ export interface ApiProductCategoryProductCategory
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductImageProductImage
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_images';
+  info: {
+    description: '';
+    displayName: 'Product Image';
+    pluralName: 'product-images';
+    singularName: 'product-image';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isDefault: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-image.product-image'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    url: Schema.Attribute.String & Schema.Attribute.Required;
+    variants: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-variant.product-variant'
+    >;
   };
 }
 
@@ -726,6 +792,10 @@ export interface ApiProductVariantProductVariant
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    images: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::product-image.product-image'
+    >;
     isAvailable: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<false>;
@@ -796,7 +866,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
-    images: Schema.Attribute.JSON;
     isArchived: Schema.Attribute.Boolean &
       Schema.Attribute.Private &
       Schema.Attribute.DefaultTo<false>;
@@ -1430,11 +1499,13 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::article.article': ApiArticleArticle;
+      'api::customer.customer': ApiCustomerCustomer;
       'api::event-attendee.event-attendee': ApiEventAttendeeEventAttendee;
       'api::event.event': ApiEventEvent;
       'api::order-item.order-item': ApiOrderItemOrderItem;
       'api::order.order': ApiOrderOrder;
       'api::product-category.product-category': ApiProductCategoryProductCategory;
+      'api::product-image.product-image': ApiProductImageProductImage;
       'api::product-option-type.product-option-type': ApiProductOptionTypeProductOptionType;
       'api::product-option-value.product-option-value': ApiProductOptionValueProductOptionValue;
       'api::product-variant.product-variant': ApiProductVariantProductVariant;
