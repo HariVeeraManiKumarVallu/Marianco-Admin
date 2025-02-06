@@ -678,7 +678,7 @@ export interface ApiProductImageProductImage
       Schema.Attribute.Private;
     url: Schema.Attribute.String & Schema.Attribute.Required;
     variants: Schema.Attribute.Relation<
-      'oneToMany',
+      'manyToMany',
       'api::product-variant.product-variant'
     >;
   };
@@ -793,7 +793,7 @@ export interface ApiProductVariantProductVariant
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     images: Schema.Attribute.Relation<
-      'manyToOne',
+      'manyToMany',
       'api::product-image.product-image'
     >;
     isAvailable: Schema.Attribute.Boolean &

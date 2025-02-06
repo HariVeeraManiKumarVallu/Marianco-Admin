@@ -23,7 +23,7 @@
     },
     "variants": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::product-variant.product-variant",
       "mappedBy": "images"
     }
