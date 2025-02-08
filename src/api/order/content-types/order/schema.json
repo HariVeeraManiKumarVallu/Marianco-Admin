@@ -43,14 +43,18 @@
       "default": "USD",
       "required": true
     },
-    "adress": {
-      "type": "text"
+    "stripePaymentId": {
+      "type": "string",
+      "private": true
     },
-    "phone": {
-      "type": "string"
+    "shippingCost": {
+      "type": "integer"
     },
-    "stripeId": {
-      "type": "string"
+    "customer": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::customer.customer",
+      "mappedBy": "order"
     }
   }
 }

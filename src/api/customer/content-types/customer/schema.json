@@ -15,10 +15,35 @@
     "email": {
       "type": "string"
     },
-    "orders": {
+    "order": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::order.order"
+      "relation": "oneToOne",
+      "target": "api::order.order",
+      "inversedBy": "customer"
+    },
+    "address1": {
+      "type": "string"
+    },
+    "address2": {
+      "type": "string"
+    },
+    "region": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "zip": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
     }
   }
 }
