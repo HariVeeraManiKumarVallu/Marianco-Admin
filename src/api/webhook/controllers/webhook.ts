@@ -76,6 +76,7 @@ export default {
         ctx.throw(400, 'Invalid webhook payload')
       }
 
+      console.log(payload)
       // TODO: Validate webhook signature
       // const printifySignature = ctx.request.headers['x-printify-signature']
       // if (!printifySignature) {
@@ -83,7 +84,7 @@ export default {
       // }
 
       switch (payload.resource.data.action) {
-        case 'created':
+        case 'create':
           await addProduct({
             shopId: payload.resource.data.shop_id,
             productId: payload.resource.id,
@@ -240,11 +241,6 @@ async function addProduct({
       optionTypes: {
         connect: optionTypes.map(type => type.documentId)
       },
-      // images: data.images.map(image => ({
-      //   src: image.src,
-      //   variantIds: image.variant_ids,
-      //   isDefault: image.is_default,
-      // })),
     },
     fields: 'documentId',
   })
@@ -275,11 +271,6 @@ export type PrintifyProduct = {
   variants: VariantPrintify[]
   images: ProductImage[]
 }
-
-// type PrintifyOption = {
-//  values: PrintifyOptionValue[]
-//  display_in_preview: boolean
-//} & OptionType
 
 export type PrintifyOption = {
   name: string,
