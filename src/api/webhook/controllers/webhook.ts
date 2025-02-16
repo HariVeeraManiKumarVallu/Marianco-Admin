@@ -1,61 +1,25 @@
-type PrintifyWebhookPayload = {
-  id: string
-  type: string
-  created_at: string
-  resource: {
-    id: string
-    type: string
-    data: {
-      shop_id: number
-      publish_details: {
-        title: boolean
-        variants: boolean
-        description: boolean
-        tags: boolean
-        images: boolean
-        key_features: boolean
-        shipping_template: boolean
-        shipping_methods: number[]
-      }
-      action: string
-      out_of_stock_publishing: number
-      external_sku_mapping: []
-    }
-  }
-}
-
-type ProductData = {
-  productId: string
-  title: string
-  description?: string
-  basePrice: number
-  variants: string[]
-  images: {
-    src: string
-    variantIds: number[]
-    is_default: boolean
-  }[]
-}
+import crypto from 'crypto'
+import { PrintifyRequest, PrintifyWebhookRequestPayload } from '../../../../types/printify'
 
 export default {
   async webhook(ctx) {
-    try {
-      const payload = ctx.request.body as PrintifyWebhookPayload
 
-      // Validate webhook payload
+    let payload: PrintifyWebhookRequestPayload
+
+    try {
+      payload = verifyWebhookSignature(ctx.request)
+    } catch (error) {
+      ctx.send(`Webhook Error: ${error.message}`, { status: 400 });
+    }
+
+    try {
       if (!payload || !payload.resource.data.action) {
         ctx.throw(400, 'Invalid webhook payload')
       }
 
-      // TODO: Validate webhook signature
-      // const printifySignature = ctx.request.headers['x-printify-signature']
-      // if (!printifySignature) {
-      //   ctx.throw(401, 'Unauthorized webhook')
-      // }
-
       switch (payload.resource.data.action) {
         case 'create':
-          await addProduct({
+          await strapi.service('api::product.product').addProduct({
             shopId: payload.resource.data.shop_id,
             productId: payload.resource.id,
           })
@@ -95,7 +59,6 @@ export default {
     } catch (error) {
       strapi.log.error('Webhook processing error:', error)
 
-      // Handle different types of errors
       if (error instanceof Error) {
         ctx.throw(500, `Webhook processing failed: ${error.message}`)
       } else {
@@ -105,5 +68,33 @@ export default {
   },
 }
 
+function verifyWebhookSignature(request: PrintifyRequest) {
+  const signature = request.headers['x-pfy-signature'];
+  if (!signature) {
+    throw new Error('Missing Printify webhook signature header');
+  }
 
+  const secretToken = process.env.PRINTIFY_SECRET_TOKEN;
+  if (!secretToken) {
+    throw new Error('PRINTIFY_SECRET_TOKEN environment variable is not set');
+  }
 
+  const hmac = crypto.createHmac('sha256', secretToken);
+  const body = typeof request.body === 'string'
+    ? request.body
+    : JSON.stringify(request.body);
+
+  hmac.update(body);
+  const calculatedSignature = 'sha256=' + hmac.digest('hex');
+
+  const isValid = crypto.timingSafeEqual(
+    Buffer.from(signature),
+    Buffer.from(calculatedSignature)
+  );
+
+  if (!isValid) {
+    throw new Error('Invalid Printify webhook signature');
+  }
+
+  return typeof request.body === 'string' ? JSON.parse(request.body) : request.body;
+};

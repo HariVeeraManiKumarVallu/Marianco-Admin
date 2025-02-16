@@ -3,7 +3,7 @@
  */
 
 import { factories } from '@strapi/strapi';
-import { Sku } from '../../webhook/controllers/webhook';
+import { Sku } from '../../../../types/printify';
 
 export default factories.createCoreService('api::sku.sku', ({ strapi }) => ({
 	async addProductSkus(skus: Sku[], variants: { id: String, documentId: string, variantId: string }[]) {

@@ -16,8 +16,8 @@
       "type": "string",
       "required": true
     },
-    "description": {
-      "type": "text"
+    "shortDescription": {
+      "type": "string"
     },
     "productCategory": {
       "type": "relation",
@@ -67,6 +67,9 @@
       "relation": "manyToMany",
       "target": "api::product-option-type.product-option-type",
       "inversedBy": "products"
+    },
+    "description": {
+      "type": "blocks"
     }
   }
 }

@@ -3,7 +3,7 @@
  */
 
 import { factories } from '@strapi/strapi'
-import { Variant } from '../../webhook/controllers/webhook'
+import { Variant } from '../../../../types/printify';
 
 export default factories.createCoreService(
   'api::product-variant.product-variant',

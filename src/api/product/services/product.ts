@@ -3,6 +3,7 @@
  */
 
 import { factories } from '@strapi/strapi'
+import { PrintifyProduct, VariantPrintify } from '../../../../types/printify'
 
 export default factories.createCoreService('api::product.product', ({ strapi }) => ({
 	async addProduct({
@@ -13,7 +14,7 @@ export default factories.createCoreService('api::product.product', ({ strapi }) 
 		productId: string
 	}) {
 		const res = await fetch(
-			`https://api.printify.com/v1/shops/${shopId}/products/${productId}.json`,
+			`${process.env.PRINTIFY_BASE_URL}/shops/${shopId}/products/${productId}.json`,
 			{
 				method: 'GET',
 				headers: {
@@ -76,11 +77,10 @@ export default factories.createCoreService('api::product.product', ({ strapi }) 
 			.addProductSkus(skus, variants)
 
 
-		await strapi.documents('api::product.product').create({
+		const product = await strapi.documents('api::product.product').create({
 			data: {
 				productId: data.id,
 				title: data.title,
-				description: data.description,
 				basePrice: Math.min(...formattedVariants.map(variant => variant.price)),
 				skus: {
 					connect: skusInDb,
@@ -95,8 +95,55 @@ export default factories.createCoreService('api::product.product', ({ strapi }) 
 					connect: optionTypes.map(type => type.documentId)
 				},
 			},
-			fields: 'documentId',
+			fields: 'productId',
 		})
+
+		if (product.productId) {
+			try {
+				const response = await fetch(`${process.env.PRINTIFY_BASE_URL}/shops/${process.env.PRINTIFY_SHOP_ID}/products/${product.productId}/publishing_succeeded.json`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${process.env.PRINTIFY_ACCESS_TOKEN}`
+						},
+						body: JSON.stringify({
+							external: {
+								id: product.productId,
+								handle: `${process.env.BASE_URL_TO_STORE}/${product.documentId}`
+							}
+						})
+					})
+
+				if (!response.ok) {
+					throw new Error(`Error while publishing product in Printify. Status: ${response.status}`);
+				}
+
+			} catch (error) {
+				console.log((`Error while publishing product in Printify.`))
+			}
+		} else {
+			console.log('Error while creating product. Sending publishing failed to Printify.')
+
+			const response = await fetch(`${process.env.PRINTIFY_BASE_URL}/v1/shops/${process.env.PRINTIFY_SHOP_ID}/products/${product.productId}/publishing_failed.json`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${process.env.PRINTIFY_ACCESS_TOKEN}`
+					},
+					body: JSON.stringify({
+						reason: 'Error in Strapi'
+					})
+				})
+
+			if (!response.ok) {
+				console.log(`Error while sending publishing failed response to Printify. Status: ${response.status}`);
+			}
+
+		}
+
 	}
 })
 )
+

@@ -3,7 +3,7 @@
  */
 
 import { factories } from '@strapi/strapi';
-import { PrintifyOption } from '../../webhook/controllers/webhook';
+import { PrintifyOption } from '../../../../types/printify';
 
 export default factories.createCoreService('api::product-option-type.product-option-type', ({ strapi }) => ({
 	async getOptionTypes(options: PrintifyOption[]) {

@@ -3,7 +3,7 @@
  */
 
 import { factories } from '@strapi/strapi';
-import { ProductImage } from '../../webhook/controllers/webhook';
+import { ProductImage } from '../../../../types/printify';
 
 export default factories.createCoreService('api::product-image.product-image', ({ strapi }) => ({
 	async addProductImages(images: ProductImage[], variants: { id: String, documentId: string, variantId: string }[]) {
