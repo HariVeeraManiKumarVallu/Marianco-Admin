@@ -69,7 +69,7 @@
       "inversedBy": "products"
     },
     "description": {
-      "type": "text"
+      "type": "blocks"
     }
   }
 }
