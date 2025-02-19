@@ -30,10 +30,6 @@
       "default": false,
       "private": true
     },
-    "popularity": {
-      "type": "integer",
-      "min": 0
-    },
     "productId": {
       "type": "string",
       "required": true,

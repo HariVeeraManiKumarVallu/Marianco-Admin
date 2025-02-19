@@ -6,10 +6,14 @@ export default {
 
     let payload: PrintifyWebhookRequestPayload
 
-    try {
-      payload = verifyWebhookSignature(ctx.request)
-    } catch (error) {
-      ctx.send(`Webhook Error: ${error.message}`, { status: 400 });
+    if (process.env.NODE_ENV === 'production') {
+      try {
+        payload = verifyWebhookSignature(ctx.request)
+      } catch (error) {
+        ctx.send(`Webhook Error: ${error.message}`, { status: 400 });
+      }
+    } else {
+      payload = ctx.request.body
     }
 
     try {

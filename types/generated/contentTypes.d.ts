@@ -891,13 +891,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'manyToMany',
       'api::product-option-value.product-option-value'
     >;
-    popularity: Schema.Attribute.Integer &
-      Schema.Attribute.SetMinMax<
-        {
-          min: 0;
-        },
-        number
-      >;
     productCategory: Schema.Attribute.Relation<
       'manyToOne',
       'api::product-category.product-category'
