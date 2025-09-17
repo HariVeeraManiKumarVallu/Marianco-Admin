@@ -1,0 +1,29 @@
+interface NewsletterLifecycleData {
+  email?: string;
+  isSubscribed?: boolean;
+  subscribedAt?: string | Date;
+}
+
+interface NewsletterLifecycleEvent {
+  params: {
+    data: NewsletterLifecycleData;
+  };
+}
+
+export default {
+  beforeCreate(event: NewsletterLifecycleEvent) {
+    if (!event.params.data.subscribedAt) {
+      // Store as ISO string for consistency with datetime field
+      event.params.data.subscribedAt = new Date().toISOString();
+    }
+  },
+  beforeUpdate(event: NewsletterLifecycleEvent) {
+    // If re-subscribing and timestamp missing, set it
+    if (
+      event.params.data.isSubscribed === true &&
+      !event.params.data.subscribedAt
+    ) {
+      event.params.data.subscribedAt = new Date().toISOString();
+    }
+  }
+};

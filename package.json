@@ -1,35 +1,18 @@
 {
   "name": "marianco-admin",
-  "version": "0.1.0",
   "private": true,
-  "description": "A Strapi application",
+  "version": "0.1.0",
+  "type": "module",
   "scripts": {
-    "build": "strapi build",
-    "deploy": "strapi deploy",
-    "develop": "strapi develop",
-    "start": "strapi start",
-    "strapi": "strapi"
+    "develop": "node ./node_modules/@strapi/strapi/bin/strapi.js develop",
+    "start": "node ./node_modules/@strapi/strapi/bin/strapi.js start",
+    "build": "node ./node_modules/@strapi/strapi/bin/strapi.js build"
   },
   "dependencies": {
-    "@strapi/plugin-cloud": "5.4.0",
-    "@strapi/plugin-users-permissions": "5.4.0",
-    "@strapi/provider-upload-aws-s3": "^5.4.0",
-    "@strapi/strapi": "5.4.0",
-    "@strapi/typescript-utils": "^5.4.0",
-    "better-sqlite3": "^11.5.0",
-    "pg": "^8.13.1",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "^6.0.0",
-    "styled-components": "^6.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "typescript": "^5"
-  },
-  "strapi": {
-    "uuid": "bc833485-4d9d-4a13-9c07-c96bf1117495"
+    "@strapi/strapi": "5.23.4",
+    "@strapi/plugin-users-permissions": "5.23.4",
+    "@strapi/plugin-i18n": "5.23.4",
+    "@strapi/plugin-cloud": "5.23.4",
+    "better-sqlite3": "^9.4.0"
   }
 }

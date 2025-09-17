@@ -1,37 +1,11 @@
 export default [
-  {
-    name: 'strapi::security',
-    config: {
-      contentSecurityPolicy: {
-        useDefaults: true,
-        directives: {
-          'connect-src': ["'self'", 'https:'],
-          'img-src': [
-            "'self'",
-            'data:',
-            'blob:',
-            'dl.airtable.com',
-            'marianco-images.s3.eu-north-1.amazonaws.com',
-          ],
-          'media-src': [
-            "'self'",
-            'data:',
-            'blob:',
-            'dl.airtable.com',
-            'marianco-images.s3.eu-north-1.amazonaws.com',
-          ],
-          upgradeInsecureRequests: null,
-        },
-      },
-    },
-  },
-  'strapi::logger',
   'strapi::errors',
-  'strapi::cors',
+  { name: 'strapi::cors', config: { enabled: true, origin: ['http://localhost:3000'], headers: '*'} },
+  'strapi::security',
   'strapi::poweredBy',
+  'strapi::logger',
   'strapi::query',
   'strapi::body',
-  'strapi::session',
   'strapi::favicon',
-  'strapi::public',
-]
+  'strapi::public'
+];

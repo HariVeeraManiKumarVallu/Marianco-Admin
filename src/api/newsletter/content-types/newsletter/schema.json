@@ -1,0 +1,15 @@
+{
+  "kind": "collectionType",
+  "collectionName": "newsletters",
+  "info": {
+    "singularName": "newsletter",
+    "pluralName": "newsletters",
+    "displayName": "Newsletter"
+  },
+  "options": { "draftAndPublish": false },
+  "attributes": {
+    "email": { "type": "email", "required": true, "unique": true },
+    "isSubscribed": { "type": "boolean", "default": true },
+    "subscribedAt": { "type": "datetime" }
+  }
+}
