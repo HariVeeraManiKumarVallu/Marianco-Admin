@@ -14,7 +14,10 @@ export default {
   beforeCreate(event: NewsletterLifecycleEvent) {
     if (!event.params.data.subscribedAt) {
       // Store as ISO string for consistency with datetime field
-      event.params.data.subscribedAt = new Date().toISOString();
+      event.params.data.subscribedAt = new Date();
+    }
+    if (event.params.data.email) {
+      event.params.data.email = event.params.data.email.trim().toLowerCase();
     }
   },
   beforeUpdate(event: NewsletterLifecycleEvent) {
