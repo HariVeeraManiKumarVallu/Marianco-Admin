@@ -1,62 +1,16 @@
 {
   "kind": "collectionType",
   "collectionName": "articles",
-  "info": {
-    "singularName": "article",
-    "pluralName": "articles",
-    "displayName": "Article",
-    "description": ""
-  },
-  "options": {
-    "draftAndPublish": true
-  },
-  "pluginOptions": {},
+  "info": { "singularName": "article", "pluralName": "articles", "displayName": "Article" },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": { "content-api": { "visible": true } },
   "attributes": {
-    "title": {
-      "type": "string"
-    },
-    "summary": {
-      "type": "text"
-    },
-    "content": {
-      "type": "blocks",
-      "required": true
-    },
-    "publishedDate": {
-      "type": "date",
-      "required": true
-    },
-    "isFeatured": {
-      "type": "boolean",
-      "required": true
-    },
-    "slug": {
-      "type": "uid",
-      "targetField": "title"
-    },
-    "isArchived": {
-      "type": "boolean"
-    },
-    "image": {
-      "type": "media",
-      "multiple": false,
-      "required": true,
-      "allowedTypes": [
-        "images",
-        "files"
-      ]
-    },
-    "featuredGridPosition": {
-      "type": "enumeration",
-      "enum": [
-        "left",
-        "top right",
-        "bottom right",
-        "N/A"
-      ],
-      "unique": true,
-      "default": "N/A",
-      "required": true
-    }
+    "title": { "type": "string", "required": true },
+    "slug": { "type": "uid", "targetField": "title", "required": true },
+    "summary": { "type": "text" },
+    "body": { "type": "richtext" },
+    "isFeatured": { "type": "boolean", "default": false },
+    "featuredGridPosition": { "type": "integer" },
+    "publishedDate": { "type": "date" }
   }
 }

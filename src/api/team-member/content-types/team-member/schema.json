@@ -4,40 +4,19 @@
   "info": {
     "singularName": "team-member",
     "pluralName": "team-members",
-    "displayName": "Team Member",
-    "description": ""
+    "displayName": "Team Member"
   },
-  "options": {
-    "draftAndPublish": true
-  },
-  "pluginOptions": {},
+  "options": { "draftAndPublish": true },
+  "pluginOptions": { "content-api": { "visible": true } },
   "attributes": {
-    "name": {
-      "type": "string",
-      "required": true
-    },
-    "role": {
-      "type": "string",
-      "required": true
-    },
-    "bio": {
-      "type": "text",
-      "required": true
-    },
+    "name": { "type": "string", "required": true },
+    "role": { "type": "string", "required": true },
+    "bio": { "type": "text" },
     "image": {
       "type": "media",
       "multiple": false,
-      "required": true,
-      "allowedTypes": [
-        "images",
-        "files"
-      ]
+      "allowedTypes": ["images"]
     },
-    "hierarchy": {
-      "type": "integer",
-      "required": true,
-      "unique": true,
-      "min": 1
-    }
+    "hierarchy": { "type": "integer", "required": true, "unique": true }
   }
 }

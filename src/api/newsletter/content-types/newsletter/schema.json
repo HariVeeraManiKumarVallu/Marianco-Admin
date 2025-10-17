@@ -7,9 +7,12 @@
     "displayName": "Newsletter"
   },
   "options": { "draftAndPublish": false },
+  "pluginOptions": { "content-api": { "visible": true } },
   "attributes": {
     "email": { "type": "email", "required": true, "unique": true },
     "isSubscribed": { "type": "boolean", "default": true },
-    "subscribedAt": { "type": "datetime" }
+    "subscribedAt": { "type": "datetime" },
+    "source": { "type": "string", "default": "web" },
+    "mailchimpStatus": { "type": "string" }
   }
 }

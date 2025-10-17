@@ -2,17 +2,27 @@
   "name": "marianco-admin",
   "private": true,
   "version": "0.1.0",
-  "type": "module",
   "scripts": {
     "develop": "node ./node_modules/@strapi/strapi/bin/strapi.js develop",
     "start": "node ./node_modules/@strapi/strapi/bin/strapi.js start",
     "build": "node ./node_modules/@strapi/strapi/bin/strapi.js build"
   },
   "dependencies": {
-    "@strapi/strapi": "5.23.4",
-    "@strapi/plugin-users-permissions": "5.23.4",
-    "@strapi/plugin-i18n": "5.23.4",
-    "@strapi/plugin-cloud": "5.23.4",
-    "better-sqlite3": "^9.4.0"
+    "@strapi/plugin-email": "^4.25.23",
+    "@strapi/plugin-i18n": "4.25.23",
+    "@strapi/plugin-users-permissions": "4.25.23",
+    "@strapi/provider-email-nodemailer": "^5.27.0",
+    "@strapi/strapi": "4.25.23",
+    "better-sqlite3": "^9.4.0",
+    "nodemailer": "^7.0.9",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^5.3.4",
+    "square": "^43.1.0",
+    "stripe": "^19.1.0",
+    "styled-components": "^5.3.11"
+  },
+  "devDependencies": {
+    "@types/stripe": "^8.0.417"
   }
 }
