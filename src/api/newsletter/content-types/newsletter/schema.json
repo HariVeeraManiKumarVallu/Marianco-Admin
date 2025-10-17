@@ -7,9 +7,7 @@
     "displayName": "Newsletter"
   },
   "options": { "draftAndPublish": false },
-  "pluginOptions": {
-    "content-api": { "visible": true }
-  },
+  "pluginOptions": { "content-api": { "visible": true } },
   "attributes": {
     "email": { "type": "email", "required": true, "unique": true },
     "isSubscribed": { "type": "boolean", "default": true },

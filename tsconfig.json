@@ -1,17 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ES2019",
-    "module": "commonjs",
-    "lib": ["ES2020"],
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "checkJs": false,
     "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "dist",
-    "rootDir": "src",
     "resolveJsonModule": true,
-    "noEmitOnError": true
+    "types": [],
+    "rootDir": ".",
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*.ts", "src/**/*.js"],
-  "exclude": ["node_modules", "build", "dist", ".cache", ".tmp", "src/admin"]
+  "include": ["src/**/*", "types/**/*"],
+  "exclude": ["node_modules", "build", "dist"],
+  "compileOnSave": false
 }

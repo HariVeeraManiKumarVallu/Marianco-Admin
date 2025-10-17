@@ -70,6 +70,12 @@ $RECYCLE.BIN/
 *.sql
 *.sqlite
 *.sqlite3
+.tmp/
+build/
+data.db
+data/
+scripts/*.log
+seed/*.log
 
 
 ############################
@@ -122,6 +128,7 @@ coverage
 ############################
 
 .env
+.env.local
 license.txt
 exports
 .strapi

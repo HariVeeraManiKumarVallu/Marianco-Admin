@@ -1,7 +1,1 @@
-/**
- * sku controller
- */
-
-import { factories } from '@strapi/strapi'
-
-export default factories.createCoreController('api::sku.sku');
+// @ts-nocheck/**  * sku controller  */  import { factories } from '@strapi/strapi'  export default factories.createCoreController('api::sku.sku');

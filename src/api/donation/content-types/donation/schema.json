@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "donations",
+  "info": {
+    "singularName": "donation",
+    "pluralName": "donations",
+    "displayName": "Donation"
+  },
+  "options": { "draftAndPublish": false },
+  "pluginOptions": { "content-api": { "visible": true } },
+  "attributes": {
+    "email": { "type": "email", "required": true },
+    "amount": { "type": "integer" },
+    "currency": { "type": "string" },
+    "paymentId": { "type": "string" },
+    "subscriptionId": { "type": "string" },
+    "planId": { "type": "string" }
+  }
+}
