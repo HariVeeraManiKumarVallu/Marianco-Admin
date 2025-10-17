@@ -145,3 +145,8 @@ build
 .env*
 *.env
 !.env.example
+
+# Ignore env files
+.env*
+*.env
+!.env.example
