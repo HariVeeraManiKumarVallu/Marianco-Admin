@@ -1,7 +1,9 @@
 'use strict';
 
-module.exports = () => ({
+module.exports = ({ env }) => ({
+  auth: { secret: env('ADMIN_JWT_SECRET') },
+  apiToken: { salt: env('API_TOKEN_SALT') },
+  url: env('STRAPI_ADMIN_BACKEND_URL', '/'),
+  path: '/admin', // do not read ADMIN_PATH
   serveAdminPanel: true,
-  url: '/admin',
-  path: 'build',
 });
