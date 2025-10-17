@@ -136,3 +136,7 @@ dist
 build
 .strapi-updater.json
 .strapi-cloud.json
+# Ignore env files
+.env*
+*.env
+!.env.example
